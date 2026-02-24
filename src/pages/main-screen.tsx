@@ -1,6 +1,6 @@
-import Card from '../components/card';
+import Card from '../components/main/card';
 import Header from '../components/header';
-import LocationList from '../components/location-list';
+import LocationList from '../components/main/location-list';
 import Map from '../components/map';
 import Sorting from '../components/sorting';
 
@@ -18,7 +18,7 @@ export default function MainPage({
       <Header />
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
-        <div className="tabs">{/* список городов */}
+        <div className="tabs">
           <LocationList />
         </div>
         <div className="cities">
@@ -28,17 +28,13 @@ export default function MainPage({
               <b className="places__found">
                 {placesCount} places to stay in Amsterdam
               </b>
-              {/* сортировка */}
               <Sorting />
               <div className="cities__places-list places__list tabs__content">
-                {/* карточки */}
-                {/* <LocationList cardsCount={cardsCount}/> */}
                 {Array.from({ length: cardsCount }, (_, i) => (
                   <Card key={i} />
                 ))}
               </div>
             </section>
-            {/* карта */}
             <Map />
           </div>
         </div>
