@@ -1,8 +1,8 @@
-import Header from '../components/header';
+import Header from '../components/header/header';
 import Card from '../components/main/card';
-import OfferGallery from '../components/offer.tsx/offer-gallery';
-import OfferInside from '../components/offer.tsx/offer-inside';
-import OfferReviews from '../components/offer.tsx/offer-reviews';
+import OfferGallery from '../components/offer/offer-gallery';
+import OfferInside from '../components/offer/offer-inside';
+import OfferReviews from '../components/offer/offer-reviews';
 
 export default function Offer(): JSX.Element {
   return (

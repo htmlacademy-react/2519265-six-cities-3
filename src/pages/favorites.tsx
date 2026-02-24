@@ -1,6 +1,6 @@
 import FavoritesList from '../components/favorites/favorites-list';
 import Footer from '../components/footer';
-import Header from '../components/header';
+import Header from '../components/header/header';
 
 export default function Favorites(): JSX.Element {
   return (
