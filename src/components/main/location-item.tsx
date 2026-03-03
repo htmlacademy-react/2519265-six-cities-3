@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 type LocationItemValue = {
   cityName: string;
 }
@@ -5,9 +7,9 @@ type LocationItemValue = {
 export default function LocationItem({cityName}: LocationItemValue): JSX.Element {
   return (
     <li className="locations__item">
-      <a className="locations__item-link tabs__item" href="#">
+      <Link to='/' className="locations__item-link tabs__item">
         <span>{cityName}</span>
-      </a>
+      </Link>
     </li>
   );
 }
