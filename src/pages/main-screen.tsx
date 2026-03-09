@@ -1,14 +1,20 @@
 import LocationList from '../components/main/location-list';
 import MainWithPlaces from '../components/main/main-with-places';
+import { CommentType } from '../mosks/types/comment';
+import { OfferType } from '../mosks/types/offer';
 
 type MainScreenProps = {
   placesCount: number;
-  cardsCount: number;
+  // cardsCount: number;
+  offers: OfferType[];
+  comments: CommentType[];
 };
 
 export default function MainPage({
   placesCount,
-  cardsCount,
+  // cardsCount,
+  offers,
+  comments
 }: MainScreenProps): JSX.Element {
   return (
     <main className="page__main page__main--index">
@@ -17,7 +23,7 @@ export default function MainPage({
         <LocationList />
       </div>
       <div className="cities">
-        <MainWithPlaces placesCount={placesCount} cardsCount={cardsCount} />
+        <MainWithPlaces placesCount={placesCount} offers={offers} comments={comments}/>
       </div>
     </main>
   );

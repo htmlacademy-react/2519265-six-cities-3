@@ -8,14 +8,13 @@ import NotFound from '../../pages/notFound';
 import PrivateRoute from '../privet-rout/privet-rout';
 import Layout from '../layout';
 import LayoutTools from '../layout-tools';
-import { useState } from 'react';
+// import { useState } from 'react';
 import { CommentType, User } from '../../mosks/types/comment';
 import { UserType } from '../../mosks/types/user-type';
 import { OfferType } from '../../mosks/types/offer';
 
 type AppScreenProps = {
   placesCount: number;
-  cardsCount: number;
   user: User & UserType;
   comments: CommentType[];
   offers: OfferType[];
@@ -23,22 +22,26 @@ type AppScreenProps = {
 
 export default function App({
   placesCount,
-  cardsCount,
   user,
   comments,
-  offers
+  offers,
 }: AppScreenProps): JSX.Element {
-  const [isAuth, setIsAuth] = useState(true);
+  // const [isAuth, setIsAuth] = useState(true);
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<Layout isAuth={isAuth} user={user} />}>
+        <Route element={<Layout user={user} />}>
           <Route
             path={AppRoute.Main}
             element={
-              <MainPage placesCount={placesCount} cardsCount={cardsCount} />
+              <MainPage
+                placesCount={placesCount}
+                offers={offers}
+                comments={comments}
+              />
             }
           >
+
           </Route>
           {/* 2 */}
           <Route path={AppRoute.Favorites} element={<LayoutTools />}>
@@ -46,7 +49,7 @@ export default function App({
               path={AppRoute.Favorites}
               element={
                 <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                  <Favorites></Favorites>
+                  <Favorites offers={offers} comments={comments}/>
                 </PrivateRoute>
               }
             >
@@ -57,15 +60,18 @@ export default function App({
             path={AppRoute.Offer}
             element={
               <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                {<Offer />}
+                {
+                  <Offer/>
+                }
               </PrivateRoute>
             }
           >
+
           </Route>
           <Route path="*" element={<NotFound />}></Route>
         </Route>
 
-        <Route path={AppRoute.Login} element={<Login setIsAuth={setIsAuth} />}></Route>
+        <Route path={AppRoute.Login} element={<Login />}></Route>
       </Routes>
     </BrowserRouter>
   );

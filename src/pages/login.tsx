@@ -1,14 +1,6 @@
 import { Link } from 'react-router-dom';
 
-type LoginPageProps = {
-  setIsAuth: (value: boolean) => void;
-}
-
-export default function Login({setIsAuth}: LoginPageProps):JSX.Element {
-
-  const handleAuthStatus = () => {
-    setIsAuth(true);
-  };
+export default function Login():JSX.Element {
 
   return (
     <div className="page page--gray page--login">
@@ -37,7 +29,7 @@ export default function Login({setIsAuth}: LoginPageProps):JSX.Element {
                 <label className="visually-hidden">Password</label>
                 <input className="login__input form__input" type="password" name="password" placeholder="Password" required />
               </div>
-              <button className="login__submit form__submit button" type="submit" onClick={handleAuthStatus}>Sign in</button>
+              <button className="login__submit form__submit button" type="submit">Sign in</button>
             </form>
           </section>
           <section className="locations locations--login locations--current">

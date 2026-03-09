@@ -6,7 +6,7 @@ export type LocationType = {
 
 export type CityType = {
   name: string;
-  location: Location;
+  location: LocationType;
 };
 
 export type OfferType = {
@@ -15,7 +15,7 @@ export type OfferType = {
   type: 'apartment' | 'room' | 'house' | 'hotel';
   price: number;
   city: CityType;
-  location: Location;
+  location: LocationType;
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
