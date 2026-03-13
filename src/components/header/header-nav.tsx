@@ -1,14 +1,16 @@
 import { Link } from 'react-router-dom';
+import { User } from '../../mosks/types/comment';
+import { UserType } from '../../mosks/types/user-type';
 
 type Authorization = {
-  isAuth: boolean;
+  user: User & UserType;
 }
 
-export default function HeaderNav({isAuth}: Authorization): JSX.Element {
+export default function HeaderNav({user}: Authorization): JSX.Element {
   return (
     <nav className="header__nav">
       <ul className="header__nav-list">
-        {isAuth && (
+        {user.token && (
           <li className="header__nav-item user">
             <Link
               to="/favorites"
@@ -16,7 +18,7 @@ export default function HeaderNav({isAuth}: Authorization): JSX.Element {
             >
               <div className="header__avatar-wrapper user__avatar-wrapper"></div>
               <span className="header__user-name user__name">
-                Oliver.conner@gmail.com
+                {user.email}
               </span>
               <span className="header__favorite-count">3</span>
             </Link>

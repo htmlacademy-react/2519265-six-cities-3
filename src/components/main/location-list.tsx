@@ -1,4 +1,4 @@
-import { cities } from '../../mock';
+import { cities } from '../../mosks/mock';
 import LocationItem from './location-item';
 
 export default function LocationList(): JSX.Element {

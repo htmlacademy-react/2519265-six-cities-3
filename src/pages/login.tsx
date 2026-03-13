@@ -1,14 +1,6 @@
 import { Link } from 'react-router-dom';
 
-type LoginPageProps = {
-  setIsAuth: (value: boolean) => void;
-}
-
-export default function Login({setIsAuth}: LoginPageProps):JSX.Element {
-
-  const handleAuthStatus = () => {
-    setIsAuth(true);
-  };
+export default function Login():JSX.Element {
 
   return (
     <div className="page page--gray page--login">
@@ -16,7 +8,7 @@ export default function Login({setIsAuth}: LoginPageProps):JSX.Element {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <Link className="header__logo-link" to="main.html">
+              <Link className="header__logo-link" to="/">
                 <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
               </Link>
             </div>
@@ -37,7 +29,7 @@ export default function Login({setIsAuth}: LoginPageProps):JSX.Element {
                 <label className="visually-hidden">Password</label>
                 <input className="login__input form__input" type="password" name="password" placeholder="Password" required />
               </div>
-              <button className="login__submit form__submit button" type="submit" onClick={handleAuthStatus}>Sign in</button>
+              <button className="login__submit form__submit button" type="submit">Sign in</button>
             </form>
           </section>
           <section className="locations locations--login locations--current">
