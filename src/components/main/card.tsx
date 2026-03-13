@@ -12,7 +12,7 @@ export type CardProps = {
 export default function Card({offer, comments}: CardProps): JSX.Element {
   // const ratingWidth = (offer.rating >= MIN_RATING) ? (offer.rating * WIDTH_FOR_RATING) : 0;
   return (
-    <article className="cities__card place-card">
+    <article className="cities__card place-card" data-id={offer.id}>
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={`/offer/:${offer.id}`} state={{offer: offer, comments: comments}}>
           <img

@@ -1,6 +1,45 @@
-export default function OfferForm() {
+import { FormEvent, useState } from 'react';
+import { User } from '../../mosks/types/comment';
+import { UserType } from '../../mosks/types/user-type';
+
+type OfferFormProps = {
+  user: User & UserType;
+};
+
+export type FormDataType = {
+  date: string;
+  user: User & UserType;
+  comment: string | null;
+  rating: number | null;
+};
+
+export default function OfferForm({ user }: OfferFormProps) {
+  const [,setNewComment] = useState({
+    date: '',
+    user: user,
+    comment: '',
+    rating: 0,
+  });
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form
+      className="reviews__form form"
+      action="#"
+      method="post"
+      onSubmit={(evt: FormEvent<HTMLFormElement>) => {
+        evt.preventDefault();
+        const formData = new FormData(evt.currentTarget);
+
+        const review = formData.get('review')?.toString() ?? '';
+        const rating = formData.get('rating');
+
+        setNewComment({
+          date: new Date().toISOString(),
+          user: user,
+          comment: review,
+          rating: Number(rating ?? 0),
+        });
+      }}
+    >
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
@@ -106,7 +145,7 @@ export default function OfferForm() {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled
+          // disabled
         >
           Submit
         </button>

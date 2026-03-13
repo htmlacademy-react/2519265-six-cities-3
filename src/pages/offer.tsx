@@ -7,10 +7,15 @@ import OfferReviews from '../components/offer/offer-reviews';
 // import { offers } from '../mosks/offers';
 import { OfferType } from '../mosks/types/offer';
 import { getWidthForRating } from '../const';
-import { CommentType } from '../mosks/types/comment';
+import { CommentType, User } from '../mosks/types/comment';
+import { UserType } from '../mosks/types/user-type';
 // import { OfferType } from '../mosks/types/offer';
 
-export type OfferProps = {
+type OfferProps = {
+  user: User & UserType;
+}
+
+type LocationStateOffer = {
   offer: OfferType;
   comments: CommentType[];
 }
@@ -22,10 +27,10 @@ export type OfferProps = {
 //   return state as CommentType;
 // }
 
-export default function Offer(): JSX.Element {
+export default function Offer({user}: OfferProps): JSX.Element {
   // const [currentOffer, setOffer] = useState(offer);
   const location = useLocation();
-  const cardData = location.state as OfferProps;
+  const cardData = location.state as LocationStateOffer;
   const {offer, comments} = cardData;
   // const comments = location.state as OfferProps | null;
 
@@ -103,7 +108,7 @@ export default function Offer(): JSX.Element {
                 </p>
               </div>
             </div>
-            <OfferReviews comments={comments}/>
+            <OfferReviews comments={comments} user={user}/>
           </div>
         </div>
         <section className="offer__map map"></section>

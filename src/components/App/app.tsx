@@ -26,7 +26,6 @@ export default function App({
   comments,
   offers,
 }: AppScreenProps): JSX.Element {
-  // const [isAuth, setIsAuth] = useState(true);
   return (
     <BrowserRouter>
       <Routes>
@@ -41,7 +40,6 @@ export default function App({
               />
             }
           >
-
           </Route>
           {/* 2 */}
           <Route path={AppRoute.Favorites} element={<LayoutTools />}>
@@ -49,7 +47,7 @@ export default function App({
               path={AppRoute.Favorites}
               element={
                 <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                  <Favorites offers={offers} comments={comments}/>
+                  <Favorites offers={offers} comments={comments} />
                 </PrivateRoute>
               }
             >
@@ -61,12 +59,11 @@ export default function App({
             element={
               <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
                 {
-                  <Offer/>
+                  <Offer user={user}/>
                 }
               </PrivateRoute>
             }
           >
-
           </Route>
           <Route path="*" element={<NotFound />}></Route>
         </Route>
