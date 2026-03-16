@@ -1,9 +1,13 @@
-export default function OfferGalleryItem(): JSX.Element {
+type OfferGalleryItemProps = {
+  image: string;
+}
+
+export default function OfferGalleryItem({image}: OfferGalleryItemProps): JSX.Element {
   return (
     <div className="offer__image-wrapper">
       <img
         className="offer__image"
-        src="img/apartment-01.jpg"
+        src={image}
         alt="Photo studio"
       />
     </div>

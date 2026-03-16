@@ -8,9 +8,11 @@ type AppPath = '/login' | '/favorites' | '/offer' | '/';
 
 type Authorization = {
   user: User & UserType;
+  favoritePlacesCount: number;
+  authorizationStatus: string;
 }
 
-export default function Layout({user}: Authorization): JSX.Element {
+export default function Layout({user, favoritePlacesCount, authorizationStatus}: Authorization): JSX.Element {
   const { pathname } = useLocation();
 
   const getLayoutClass = (path: string): string =>
@@ -19,7 +21,7 @@ export default function Layout({user}: Authorization): JSX.Element {
   const dynamicClass = getLayoutClass(pathname);
   return (
     <div className={`page ${dynamicClass}`}>
-      <Header user={user}/>
+      <Header user={user} favoritePlacesCount={favoritePlacesCount} authorizationStatus={authorizationStatus}/>
       <main className="page__main page__main--index">
         <Outlet />
       </main>

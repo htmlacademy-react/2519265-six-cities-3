@@ -4,10 +4,10 @@ import App from './components/App/app';
 import { user } from './mosks/user';
 import { comments } from './mosks/comments';
 import { offers } from './mosks/offers';
+import { offersCard } from './mosks/offers-card';
+import { AuthorizationStatus } from './const';
 
-export const Setting = {
-  PlacesCount: 312,
-} as const;
+const getAuthorizationStatus = AuthorizationStatus.Auth;
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -16,10 +16,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <App
-      placesCount={Setting.PlacesCount}
       user={user}
       comments={comments}
       offers={offers}
+      offersCard ={offersCard}
+      authorizationStatus={getAuthorizationStatus}
     />
   </React.StrictMode>,
 );

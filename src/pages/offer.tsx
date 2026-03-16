@@ -1,89 +1,105 @@
 import { useLocation } from 'react-router-dom';
 import OfferGallery from '../components/offer/offer-gallery';
 import OfferInside from '../components/offer/offer-inside';
+import { OfferFullType } from '../mosks/types/offer';
+import { BookmarkClassName } from '../const';
+import { CommentType } from '../mosks/types/comment';
 import OfferReviews from '../components/offer/offer-reviews';
-import { OfferType } from '../mosks/types/offer';
-import { getWidthForRating } from '../const';
-import { CommentType, User } from '../mosks/types/comment';
-import { UserType } from '../mosks/types/user-type';
+import { getWidthForRating } from '../utils';
 
 type OfferProps = {
-  user: User & UserType;
-}
-
-type LocationStateOffer = {
-  offer: OfferType;
+  offers: OfferFullType[];
   comments: CommentType[];
-}
+  authorizationStatus: string;
+};
 
-export default function Offer({user}: OfferProps): JSX.Element {
+export default function Offer({
+  offers,
+  comments,
+  authorizationStatus,
+}: OfferProps): JSX.Element | null {
   const location = useLocation();
-  const cardData = location.state as LocationStateOffer;
-  const {offer, comments} = cardData;
+  const offerId = location.pathname.split('/').filter(Boolean).at(-1);
+
+  const currentOffer = offers.find(({ id }) => id === offerId);
+
+  if (!currentOffer) {
+    return null;
+  }
+
+  const { title, rating, price, type, isPremium, isFavorite, bedrooms, maxAdults, goods, host, description, images } = currentOffer;
+
+  const {name, avatarUrl, isPro} = host;
 
   return (
     <main className="page__main page__main--offer">
       <section className="offer">
-        <OfferGallery />
+        <OfferGallery images={images}/>
         <div className="offer__container container">
           <div className="offer__wrapper">
-            <div className="offer__mark">
-              <span>Premium</span>
-            </div>
+            {isPremium && (
+              <div className="offer__mark">
+                <span>Premium</span>
+              </div>
+            )}
             <div className="offer__name-wrapper">
-              <h1 className="offer__name">
-                {offer?.title}
-              </h1>
-              <button className="offer__bookmark-button button" type="button">
-                <svg className="offer__bookmark-icon" width="31" height="33">
+              <h1 className="offer__name">{title}</h1>
+              <button
+                className={`place-card__bookmark-button button ${isFavorite && BookmarkClassName.PlaceCardActive}`}
+                type="button"
+              >
+                <svg className="place-card__bookmark-icon" width="31" height="33">
                   <use xlinkHref="#icon-bookmark"></use>
                 </svg>
-                <span className="visually-hidden">To bookmarks</span>
+                <span className="visually-hidden">{isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
               </button>
             </div>
             <div className="offer__rating rating">
               <div className="offer__stars rating__stars">
-                <span style={{ width: `${offer?.rating ? getWidthForRating(offer?.rating) : 0}%` }}></span>
+                <span
+                  style={{
+                    width: `${rating ? getWidthForRating(rating) : 0}%`,
+                  }}
+                >
+                </span>
                 <span className="visually-hidden">Rating</span>
               </div>
-              <span className="offer__rating-value rating__value">{offer?.rating}</span>
+              <span className="offer__rating-value rating__value">
+                {rating}
+              </span>
             </div>
             <ul className="offer__features">
-              <li className="offer__feature offer__feature--entire">
-                {offer?.type}
-              </li>
+              <li className="offer__feature offer__feature--entire">{type}</li>
               <li className="offer__feature offer__feature--bedrooms">
-                3 Bedrooms
+                {bedrooms} Bedrooms
               </li>
               <li className="offer__feature offer__feature--adults">
-                Max 4 adults
+                Max {maxAdults} adults
               </li>
             </ul>
             <div className="offer__price">
-              <b className="offer__price-value">&euro;{offer?.price}</b>
+              <b className="offer__price-value">&euro;{price}</b>
               <span className="offer__price-text">&nbsp;night</span>
             </div>
-            <OfferInside />
+            {goods.length > 0 ? <OfferInside goods={goods}/> : ''}
             <div className="offer__host">
               <h2 className="offer__host-title">Meet the host</h2>
               <div className="offer__host-user user">
-                <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+                <div className={`offer__avatar-wrapper user__avatar-wrapper ${isPro ? 'offer__avatar-wrapper--pro' : ''}`}>
                   <img
                     className="offer__avatar user__avatar"
-                    src="img/avatar-angelina.jpg"
+                    src={avatarUrl}
                     width="74"
                     height="74"
                     alt="Host avatar"
                   />
                 </div>
-                <span className="offer__user-name">Angelina</span>
-                <span className="offer__user-status">Pro</span>
+                <span className="offer__user-name">{name}</span>
+                <span className="offer__user-status">{isPro ? 'Pro' : ''}</span>
               </div>
               <div className="offer__description">
                 <p className="offer__text">
-                  A quiet cozy and picturesque that hides behind a a river by
-                  the unique lightness of Amsterdam. The building is green and
-                  from 18th century.
+                  {description}
                 </p>
                 <p className="offer__text">
                   An independent House, strategically located between Rembrand
@@ -92,7 +108,7 @@ export default function Offer({user}: OfferProps): JSX.Element {
                 </p>
               </div>
             </div>
-            <OfferReviews comments={comments} user={user}/>
+            <OfferReviews comments={comments} authorizationStatus={authorizationStatus} />
           </div>
         </div>
         <section className="offer__map map"></section>

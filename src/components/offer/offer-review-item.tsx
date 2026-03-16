@@ -1,6 +1,7 @@
-import { DateFormat, getWidthForRating } from '../../const';
+import { DateFormat } from '../../const';
 import { CommentType } from '../../mosks/types/comment';
 import dayjs from 'dayjs';
+import { getWidthForRating } from '../../utils';
 
 
 type ReviewsItemProp = {

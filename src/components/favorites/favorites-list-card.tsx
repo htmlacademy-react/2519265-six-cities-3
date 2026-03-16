@@ -1,28 +1,28 @@
 import { Link } from 'react-router-dom';
-import { OfferType } from '../../mosks/types/offer';
-import { getWidthForRating } from '../../const';
-import { CommentType } from '../../mosks/types/comment';
+import { OfferForCardType } from '../../mosks/types/offer';
+import { BookmarkClassName, getOfferPath} from '../../const';
+import { getWidthForRating } from '../../utils';
 
 export type FavoritesListCardProps = {
-  offer: OfferType;
-  comments: CommentType[];
+  offer: OfferForCardType;
+  // comments: CommentType[];
 };
 
 export default function FavoritesListCard({
   offer,
-  comments
+  // comments
 }: FavoritesListCardProps): JSX.Element {
-  // console.log(comments)
+  const { id, price, isPremium, isFavorite, rating, title, type } = offer;
   return (
     <article className="favorites__card place-card">
-      {offer.isPremium && (
+      {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       )}
 
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <Link to={`/offer/:${offer.id}`} state={{offer: offer, comments: comments}}>
+        <Link to={getOfferPath(id)}>
           <img
             className="place-card__image"
             src="img/apartment-small-03.jpg"
@@ -35,34 +35,31 @@ export default function FavoritesListCard({
       <div className="favorites__card-info place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;{offer.price}</b>
+            <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          {offer.isFavorite && (
-            <button
-              className="place-card__bookmark-button place-card__bookmark-button--active button"
-              type="button"
-            >
-              <svg className="place-card__bookmark-icon" width="18" height="19">
-                <use xlinkHref="#icon-bookmark"></use>
-              </svg>
-              <span className="visually-hidden">In bookmarks</span>
-            </button>
-          )}
+          <button
+            className={`place-card__bookmark-button button ${BookmarkClassName.PlaceCardActive}`}
+            type="button"
+          >
+            <svg className="place-card__bookmark-icon" width="18" height="19">
+              <use xlinkHref="#icon-bookmark"></use>
+            </svg>
+            <span className="visually-hidden">{isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
+          </button>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span
-              style={{ width: `${getWidthForRating(offer.rating)}%` }}
-            >
-            </span>
+            <span style={{ width: `${getWidthForRating(rating)}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/:${offer.id}`} state={offer}>{offer.title}</Link>
+          <Link to={`/offer/:${id}`} state={offer}>
+            {title}
+          </Link>
         </h2>
-        <p className="place-card__type">{offer.type}</p>
+        <p className="place-card__type">{type}</p>
       </div>
     </article>
   );

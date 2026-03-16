@@ -5,9 +5,11 @@ import HeaderNav from './header-nav';
 
 type Authorization = {
   user: User & UserType;
+  favoritePlacesCount: number;
+  authorizationStatus: string;
 }
 
-export default function Header({user}: Authorization): JSX.Element {
+export default function Header({user, favoritePlacesCount, authorizationStatus}: Authorization): JSX.Element {
   return (
     <header className="header">
       <div className="container">
@@ -15,7 +17,7 @@ export default function Header({user}: Authorization): JSX.Element {
           <div className="header__left">
             <Logo />
           </div>
-          <HeaderNav user={user}/>
+          <HeaderNav user={user} favoritePlacesCount={favoritePlacesCount} authorizationStatus={authorizationStatus}/>
         </div>
       </div>
     </header>

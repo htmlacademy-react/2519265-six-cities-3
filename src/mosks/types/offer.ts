@@ -1,15 +1,8 @@
-export type LocationType = {
-  latitude: number;
-  longitude: number;
-  zoom: number;
-};
+import { CityType } from './city';
+import { HostType } from './host';
+import { LocationType } from './location';
 
-export type CityType = {
-  name: string;
-  location: LocationType;
-};
-
-export type OfferType = {
+export type OfferTemplateType = {
   id: string;
   title: string;
   type: 'apartment' | 'room' | 'house' | 'hotel';
@@ -19,5 +12,17 @@ export type OfferType = {
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
+};
+
+export type OfferForCardType = OfferTemplateType & {
   previewImage: string;
+}
+
+export type OfferFullType = OfferTemplateType & {
+  description: string;
+  bedrooms: number;
+  goods: string[];
+  host: HostType;
+  images: string[];
+  maxAdults: number;
 };

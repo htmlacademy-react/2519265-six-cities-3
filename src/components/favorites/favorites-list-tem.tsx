@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import FavoritesListCard from './favorites-list-card';
-import { OfferType } from '../../mosks/types/offer';
+import { OfferForCardType } from '../../mosks/types/offer';
 import { CommentType } from '../../mosks/types/comment';
 
 export type FavoriteItemProps = {
   city: string;
-  offers: OfferType[];
+  offers: OfferForCardType[];
   comments: CommentType[];
 }
 

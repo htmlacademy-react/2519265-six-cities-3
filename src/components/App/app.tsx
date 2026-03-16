@@ -1,45 +1,52 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import MainPage from '../../pages/main-screen';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute } from '../../const';
 import Login from '../../pages/login';
-import Favorites from '../../pages/favorites';
 import Offer from '../../pages/offer';
 import NotFound from '../../pages/notFound';
 import PrivateRoute from '../privet-rout/privet-rout';
 import Layout from '../layout';
 import LayoutTools from '../layout-tools';
-// import { useState } from 'react';
 import { CommentType, User } from '../../mosks/types/comment';
 import { UserType } from '../../mosks/types/user-type';
-import { OfferType } from '../../mosks/types/offer';
+import { OfferForCardType, OfferFullType } from '../../mosks/types/offer';
+import FavoriteSection from '../../pages/favorites/favorite-section';
+import Main from '../../pages/main';
 
 type AppScreenProps = {
-  placesCount: number;
   user: User & UserType;
   comments: CommentType[];
-  offers: OfferType[];
+  offers: OfferFullType[];
+  offersCard: OfferForCardType[];
+  authorizationStatus: string;
+
 };
 
 export default function App({
-  placesCount,
   user,
   comments,
   offers,
-}: AppScreenProps): JSX.Element {
+  offersCard,
+  authorizationStatus,
+}: AppScreenProps) {
+  const favoritesPlaces = offersCard.filter(
+    ({ isFavorite }) => isFavorite === true,
+  );
+  const favoritePlacesCount = favoritesPlaces.length;
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<Layout user={user}/>}>
+        <Route
+          element={
+            <Layout
+              user={user}
+              favoritePlacesCount={favoritePlacesCount}
+              authorizationStatus={authorizationStatus}
+            />
+          }
+        >
           <Route
             path={AppRoute.Main}
-            element={
-              <MainPage
-                placesCount={placesCount}
-                offers={offers}
-                comments={comments}
-                user={user}
-              />
-            }
+            element={<Main offersCard={offersCard} />}
           >
           </Route>
           {/* 2 */}
@@ -47,8 +54,11 @@ export default function App({
             <Route
               path={AppRoute.Favorites}
               element={
-                <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                  <Favorites offers={offers} comments={comments} />
+                <PrivateRoute authorizationStatus={authorizationStatus}>
+                  <FavoriteSection
+                    offersCard={offersCard}
+                    comments={comments}
+                  />
                 </PrivateRoute>
               }
             >
@@ -56,13 +66,13 @@ export default function App({
           </Route>
           {/* 3 */}
           <Route
-            path={AppRoute.Offer}
+            path={`${AppRoute.Offer}/:id`}
             element={
-              <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                {
-                  <Offer user={user}/>
-                }
-              </PrivateRoute>
+              <Offer
+                offers={offers}
+                comments={comments}
+                authorizationStatus={authorizationStatus}
+              />
             }
           >
           </Route>

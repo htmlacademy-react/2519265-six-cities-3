@@ -1,27 +1,17 @@
 import { useState } from 'react';
 import LocationList from '../components/main/location-list';
 import MainWithPlaces from '../components/main/main-with-places';
-import { CommentType, User } from '../mosks/types/comment';
-import { OfferType } from '../mosks/types/offer';
-import { UserType } from '../mosks/types/user-type';
+import { OfferForCardType } from '../mosks/types/offer';
+import MainWithoutPlaces from '../components/main/main-without-places';
 
 type MainScreenProps = {
-  placesCount: number;
-  // cardsCount: number;
-  offers: OfferType[];
-  comments: CommentType[];
-  user: User & UserType;
-  // onHover: (evt: React.MouseEvent<HTMLElement>) => void;
+  offersCard: OfferForCardType[];
 };
 
-export default function MainPage({
-  placesCount,
-  // cardsCount,
-  offers,
-  comments,
-  user,
-  // onHover
+export default function MainWithElements({
+  offersCard,
 }: MainScreenProps): JSX.Element {
+  const isPlaces: boolean = offersCard.length > 0;
   const [,setCurrentElement] = useState<string | null>(null);
 
   const handleMouseEnter = (evt: React.MouseEvent<HTMLElement>) => {
@@ -36,18 +26,14 @@ export default function MainPage({
   };
 
   return (
-    <main className="page__main page__main--index">
+    <main className={`page__main page__main--index ${!isPlaces && 'page__main--index-empty'}`}>
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
         <LocationList />
       </div>
       <div className="cities" onMouseMove={handleMouseEnter}>
-        <MainWithPlaces
-          placesCount={placesCount}
-          offers={offers}
-          comments={comments}
-          user={user}
-        />
+        {isPlaces && <MainWithPlaces offersCard={offersCard} />}
+        {!isPlaces && <MainWithoutPlaces/>}
       </div>
     </main>
   );
