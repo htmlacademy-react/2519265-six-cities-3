@@ -25,4 +25,7 @@ export type OfferFullType = OfferTemplateType & {
   host: HostType;
   images: string[];
   maxAdults: number;
+  previewImage?: string;
 };
+
+export type OfferType = OfferForCardType | OfferFullType;
