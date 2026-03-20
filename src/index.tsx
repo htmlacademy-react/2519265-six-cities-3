@@ -4,7 +4,6 @@ import App from './components/App/app';
 import { user } from './mosks/user';
 import { comments } from './mosks/comments';
 import { offers } from './mosks/offers';
-// import { offersCard } from './mosks/offers-card';
 import { AuthorizationStatus } from './const';
 
 const getAuthorizationStatus = AuthorizationStatus.Auth;
@@ -19,7 +18,6 @@ root.render(
       user={user}
       comments={comments}
       offers={offers}
-      // offersCard ={offersCard}
       authorizationStatus={getAuthorizationStatus}
     />
   </React.StrictMode>,

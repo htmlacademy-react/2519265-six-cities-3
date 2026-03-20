@@ -3,11 +3,12 @@ import { OfferForCardType } from '../../mosks/types/offer';
 import Map from '../map/map';
 import Card from './card';
 import Sorting from './sorting';
-import { CITY } from '../../const';
 
 type MainScreenProps = {
   offersCard: OfferForCardType[];
 };
+
+const CITY = 'Amsterdam';
 
 export default function MainWithPlaces({
   offersCard,

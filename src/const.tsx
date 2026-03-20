@@ -41,5 +41,3 @@ export enum Markers {
   URL_MARKER_CURRENT = '/markup/img/pin-active.svg',
 }
 
-export const CITY = 'Amsterdam';
-

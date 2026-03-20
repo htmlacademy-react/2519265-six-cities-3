@@ -16,16 +16,13 @@ type AppScreenProps = {
   user: User & UserType;
   comments: CommentType[];
   offers: OfferFullType[] & OfferForCardType[];
-  // offersCard: OfferForCardType[];
   authorizationStatus: string;
-
 };
 
 export default function App({
   user,
   comments,
   offers,
-  // offersCard,
   authorizationStatus,
 }: AppScreenProps) {
   const favoritesPlaces = offers.filter(
