@@ -1,25 +1,29 @@
 import { useLocation } from 'react-router-dom';
 import OfferGallery from '../components/offer/offer-gallery';
 import OfferInside from '../components/offer/offer-inside';
-import { OfferFullType } from '../mosks/types/offer';
+import { OfferForCardType, OfferFullType } from '../mosks/types/offer';
 import { BookmarkClassName } from '../const';
 import { CommentType } from '../mosks/types/comment';
 import OfferReviews from '../components/offer/offer-reviews';
 import { getWidthForRating } from '../utils';
+import Map from '../components/map/map';
+import Card from '../components/main/card';
 
 type OfferProps = {
   offers: OfferFullType[];
+  offersForCards: OfferForCardType[];
   comments: CommentType[];
   authorizationStatus: string;
 };
 
 export default function Offer({
   offers,
+  offersForCards,
   comments,
   authorizationStatus,
 }: OfferProps): JSX.Element | null {
   const location = useLocation();
-  const offerId = location.pathname.split('/').filter(Boolean).at(-1);
+  const offerId = location.pathname.split('/').filter(Boolean).at(-1) ?? null;
 
   const currentOffer = offers.find(({ id }) => id === offerId);
 
@@ -27,8 +31,9 @@ export default function Offer({
     return null;
   }
 
-  const { title, rating, price, type, isPremium, isFavorite, bedrooms, maxAdults, goods, host, description, images } = currentOffer;
+  const { title, rating, price, type, isPremium, isFavorite, bedrooms, maxAdults, goods, host, description, images, city } = currentOffer;
 
+  const offersCard = offersForCards.filter((offer) => offer.city.name === city.name).slice(0, 2);
   const {name, avatarUrl, isPro} = host;
 
   return (
@@ -111,7 +116,8 @@ export default function Offer({
             <OfferReviews comments={comments} authorizationStatus={authorizationStatus} />
           </div>
         </div>
-        <section className="offer__map map"></section>
+        {/* <section className="offer__map map"></section> */}
+        <Map offersCard={offersCard} city={city} currentCardId={offerId} className='offer__map map' />
       </section>
       <div className="container">
         <section className="near-places places">
@@ -122,6 +128,7 @@ export default function Offer({
             {/* <Card />
             <Card />
             <Card /> */}
+            {offersCard.map((offer) => <Card key={offer.id} offer={offer} />)}
           </div>
         </section>
       </div>

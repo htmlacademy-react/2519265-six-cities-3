@@ -5,15 +5,15 @@ import { getWidthForRating } from '../../utils';
 
 export type CardProps = {
   offer: OfferForCardType;
-  onHover: (id: string | null) => void;
+  onHover?: (id: string | null) => void;
 };
 
 export default function Card({ offer, onHover }: CardProps): JSX.Element {
   const { id, title, isFavorite, type } = offer;
   return (
     <article className="cities__card place-card"
-      onMouseEnter={() => onHover(id)}
-      onMouseLeave={() => onHover(null)}
+      onMouseEnter={() => onHover?.(id)}
+      onMouseLeave={() => onHover?.(null)}
     >
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={getOfferPath(id)}>

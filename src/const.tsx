@@ -1,3 +1,5 @@
+import { CityType } from './mosks/types/city';
+
 export enum AppRoute {
   Main = '/',
   Login = '/login',
@@ -40,4 +42,14 @@ export enum Markers {
   URL_MARKER_DEFAULT = '/markup/img/pin.svg',
   URL_MARKER_CURRENT = '/markup/img/pin-active.svg',
 }
+
+export const DEFAULT_CITY: CityType = {
+  name: 'Amsterdam',
+  location: {
+    latitude: 52.3809553943508,
+    longitude: 4.939309666406198,
+    zoom: 11,
+  },
+};
+
 

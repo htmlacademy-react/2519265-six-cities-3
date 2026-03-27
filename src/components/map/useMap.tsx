@@ -1,26 +1,28 @@
 import {useEffect, useState, useRef} from 'react';
-import { OfferForCardType } from '../../mosks/types/offer';
 import leaflet, {Map} from 'leaflet';
+import { CityType } from '../../mosks/types/city';
 
 type UseMapProps = {
-  currentOffer: OfferForCardType;
+  city: CityType;
   mapRef: React.RefObject<HTMLDivElement>;
 }
 
-export default function useMap({currentOffer, mapRef}: UseMapProps) {
+export default function useMap({city, mapRef}: UseMapProps) {
   const [map, setMap] = useState<Map | null>(null);
   const isRenderedRef = useRef(false);
 
-  const {latitude, longitude, zoom} = currentOffer.location;
 
   useEffect(() => {
     if(mapRef.current !== null && !isRenderedRef.current) {
+      const {latitude, longitude, zoom} = city.location;
+
       const instance = leaflet.map(mapRef.current, {
         center: {
           lat: latitude,
           lng: longitude,
         },
         zoom: zoom,
+        scrollWheelZoom: true,
       });
 
       leaflet
@@ -36,7 +38,7 @@ export default function useMap({currentOffer, mapRef}: UseMapProps) {
       isRenderedRef.current = true;
     }
 
-  }, [mapRef, latitude, longitude, zoom]);
+  }, [mapRef, city]);
 
   return map;
 }

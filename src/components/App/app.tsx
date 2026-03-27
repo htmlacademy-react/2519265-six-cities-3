@@ -8,9 +8,10 @@ import Layout from '../layout';
 import LayoutTools from '../layout-tools';
 import { CommentType, User } from '../../mosks/types/comment';
 import { UserType } from '../../mosks/types/user-type';
-import { OfferForCardType, OfferFullType, OfferType } from '../../mosks/types/offer';
+import { OfferType } from '../../mosks/types/offer';
 import FavoriteSection from '../../pages/favorites/favorite-section';
 import Main from '../../pages/main';
+import { isOfferForCard, isOfferForOffer } from '../../utils';
 
 type AppScreenProps = {
   user: User & UserType;
@@ -29,12 +30,8 @@ export default function App({
     ({ isFavorite }) => isFavorite === true,
   );
 
-  const isOfferForCard = (offer: OfferType): offer is OfferForCardType => 'previewImage' in offer && typeof offer.previewImage === 'string';
-  const isOfferForOffer = (offer: OfferType): offer is OfferFullType => 'description' in offer && typeof offer.description === 'string';
-
-
-  const offerForCard = offers.filter(isOfferForCard);
-  const offerForOffer = offers.filter(isOfferForOffer);
+  const offersForCard = offers.filter(isOfferForCard);
+  const offersForOffer = offers.filter(isOfferForOffer);
 
   const favoritePlacesCount = favoritesPlaces.length;
   return (
@@ -51,7 +48,7 @@ export default function App({
         >
           <Route
             path={AppRoute.Main}
-            element={<Main offersCard={offerForCard} />}
+            element={<Main offersCard={offersForCard} />}
           >
           </Route>
           {/* 2 */}
@@ -61,7 +58,7 @@ export default function App({
               element={
                 <PrivateRoute authorizationStatus={authorizationStatus}>
                   <FavoriteSection
-                    offersCard={offerForCard}
+                    offersCard={offersForCard}
                   />
                 </PrivateRoute>
               }
@@ -73,7 +70,8 @@ export default function App({
             path={`${AppRoute.Offer}/:id`}
             element={
               <Offer
-                offers={offerForOffer}
+                offers={offersForOffer}
+                offersForCards={offersForCard}
                 comments={comments}
                 authorizationStatus={authorizationStatus}
               />
