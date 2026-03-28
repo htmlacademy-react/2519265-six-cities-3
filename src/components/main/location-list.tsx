@@ -1,16 +1,17 @@
+import { useAppDispatch } from '../../hooks';
 import { CITIES_NAME } from '../../mosks/mock';
-import { CityType } from '../../mosks/types/city';
+import { setCity } from '../../store/actions';
 import LocationItem from './location-item';
 
 type LocationListProps = {
-  onClick: (city: CityType | string) => void;
-  activeCity: CityType | string;
+  activeCity: string;
 };
 
 export default function LocationList({
-  onClick,
   activeCity,
 }: LocationListProps): JSX.Element {
+
+  const dispatch = useAppDispatch();
 
   return (
     <section className="locations container">
@@ -21,7 +22,7 @@ export default function LocationList({
           <LocationItem
             key={`${city}`}
             cityName={city}
-            onClick={onClick}
+            onClick={() => dispatch(setCity(city))}
             activeCity={activeCity}
           />
         ))}

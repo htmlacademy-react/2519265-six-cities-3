@@ -5,12 +5,10 @@ import { getWidthForRating } from '../../utils';
 
 export type FavoritesListCardProps = {
   offer: OfferForCardType;
-  // comments: CommentType[];
 };
 
 export default function FavoritesListCard({
   offer,
-  // comments
 }: FavoritesListCardProps): JSX.Element {
   const { id, price, isPremium, isFavorite, rating, title, type } = offer;
   return (

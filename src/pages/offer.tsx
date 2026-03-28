@@ -31,9 +31,10 @@ export default function Offer({
     return null;
   }
 
-  const { title, rating, price, type, isPremium, isFavorite, bedrooms, maxAdults, goods, host, description, images, city } = currentOffer;
+  const { id, title, rating, price, type, isPremium, isFavorite, bedrooms, maxAdults, goods, host, description, images, city } = currentOffer;
 
-  const offersCard = offersForCards.filter((offer) => offer.city.name === city.name).slice(0, 2);
+  const offersCard = offersForCards.filter((offer) => ((offer.city.name === city.name) && (offer.id !== id))).slice(0, 3);
+  const currentOfferForCard = offersForCards.find((offer) => offer.id === id);
   const {name, avatarUrl, isPro} = host;
 
   return (
@@ -116,8 +117,7 @@ export default function Offer({
             <OfferReviews comments={comments} authorizationStatus={authorizationStatus} />
           </div>
         </div>
-        {/* <section className="offer__map map"></section> */}
-        <Map offersCard={offersCard} city={city} currentCardId={offerId} className='offer__map map' />
+        <Map offersCards={currentOfferForCard ? [...offersCard, currentOfferForCard] : offersCard} city={city} currentCardId={offerId} className='offer__map map' />
       </section>
       <div className="container">
         <section className="near-places places">
@@ -125,9 +125,6 @@ export default function Offer({
             Other places in the neighbourhood
           </h2>
           <div className="near-places__list places__list">
-            {/* <Card />
-            <Card />
-            <Card /> */}
             {offersCard.map((offer) => <Card key={offer.id} offer={offer} />)}
           </div>
         </section>

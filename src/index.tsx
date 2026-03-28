@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './components/App/app';
+import App from './components/app/app';
 import { user } from './mosks/user';
 import { comments } from './mosks/comments';
 import { offers } from './mosks/offers';
 import { AuthorizationStatus } from './const';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 const getAuthorizationStatus = AuthorizationStatus.Auth;
 
@@ -14,11 +16,13 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App
-      user={user}
-      comments={comments}
-      offers={offers}
-      authorizationStatus={getAuthorizationStatus}
-    />
+    <Provider store={store}>
+      <App
+        user={user}
+        comments={comments}
+        offers={offers}
+        authorizationStatus={getAuthorizationStatus}
+      />
+    </Provider>
   </React.StrictMode>,
 );

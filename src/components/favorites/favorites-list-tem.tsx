@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import FavoritesListCard from './favorites-list-card';
 import { OfferForCardType } from '../../mosks/types/offer';
+import { useAppDispatch } from '../../hooks';
+import { setCity } from '../../store/actions';
 
 export type FavoriteItemProps = {
   city: string;
@@ -8,11 +10,12 @@ export type FavoriteItemProps = {
 }
 
 export default function FavoritesListItem({city, offers}: FavoriteItemProps): JSX.Element {
+  const dispatch = useAppDispatch();
   return (
     <li className="favorites__locations-items">
       <div className="favorites__locations locations locations--current">
         <div className="locations__item">
-          <Link to='/' className="locations__item-link">
+          <Link to='/' className="locations__item-link" onClick={() => dispatch(setCity(city))}>
             <span>{city}</span>
           </Link>
         </div>

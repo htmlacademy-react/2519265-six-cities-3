@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
 import leaflet, { LayerGroup } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import useMap from './useMap';
+import useMap from './use-map';
 import { OfferForCardType } from '../../mosks/types/offer';
-import { DEFAULT_CITY, Markers } from '../../const';
+import { Markers } from '../../const';
 import { CityType } from '../../mosks/types/city';
 
 type MapProps = {
-  offersCard: OfferForCardType[];
+  offersCards: OfferForCardType[];
   city: CityType;
   currentCardId: string | null;
   className: string | undefined;
@@ -25,18 +25,14 @@ const currentCustomIcon = leaflet.icon({
 });
 
 export default function Map({
-  offersCard,
+  offersCards,
   city,
   currentCardId,
   className
 }: MapProps): JSX.Element {
   const mapRef = useRef<HTMLDivElement | null>(null);
 
-  if(!city) {
-    city = DEFAULT_CITY;
-  }
-
-  const offersOfCurrentCity = offersCard.filter(
+  const offersOfCurrentCity = offersCards.filter(
     (offer) => offer.city.name === city.name,
   );
 
@@ -71,7 +67,7 @@ export default function Map({
           .addTo(markerLayer.current);
       });
     }
-  }, [map, offersCard, currentCardId, offersOfCurrentCity]);
+  }, [map, offersCards, currentCardId, offersOfCurrentCity]);
 
   return <section className={className} ref={mapRef}></section>;
 }

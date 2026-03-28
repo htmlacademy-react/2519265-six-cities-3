@@ -1,21 +1,21 @@
-import { OfferForCardType } from '../../mosks/types/offer';
+import { useAppSelector } from '../../hooks';
+// import { OfferForCardType } from '../../mosks/types/offer';
 import Favorites from './favorites';
 import FavoritesEmpty from './favorites-empty';
 
-type FavoriteSectionProps = {
-  offersCard: OfferForCardType[];
-};
+// type FavoriteSectionProps = {
+//   offersCard: OfferForCardType[];
+// };
 
-export default function FavoritesSection({
-  offersCard,
-}: FavoriteSectionProps) {
-  const favoriteOffers: boolean = offersCard.some(
-    ({ isFavorite }) => isFavorite === true,
-  );
+export default function FavoritesSection() {
+
+  const offersCards = useAppSelector((state) => state.offers);
+  const favoriteOffers = offersCards.filter((offer) => offer.isFavorite === true);
+  const isFavoriteOffers: boolean = favoriteOffers.length > 0;
   return (
     <>
-      {favoriteOffers && <Favorites offersCard={offersCard} />}
-      {!favoriteOffers && <FavoritesEmpty />}
+      {isFavoriteOffers && <Favorites offersCard={favoriteOffers} />}
+      {!isFavoriteOffers && <FavoritesEmpty />}
     </>
   );
 }

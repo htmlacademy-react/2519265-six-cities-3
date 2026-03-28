@@ -48,7 +48,7 @@ export default function App({
         >
           <Route
             path={AppRoute.Main}
-            element={<Main offersCard={offersForCard} />}
+            element={<Main />}
           >
           </Route>
           {/* 2 */}
@@ -57,9 +57,7 @@ export default function App({
               path={AppRoute.Favorites}
               element={
                 <PrivateRoute authorizationStatus={authorizationStatus}>
-                  <FavoriteSection
-                    offersCard={offersForCard}
-                  />
+                  <FavoriteSection />
                 </PrivateRoute>
               }
             >
