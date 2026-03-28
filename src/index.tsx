@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './components/App/app';
+import App from './components/app/app';
 import { user } from './mosks/user';
 import { comments } from './mosks/comments';
 import { offers } from './mosks/offers';
