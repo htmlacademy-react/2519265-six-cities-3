@@ -29,3 +29,5 @@ export type OfferFullType = OfferTemplateType & {
 };
 
 export type OfferType = OfferForCardType | OfferFullType;
+
+export type OffersType = OfferType[];

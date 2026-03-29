@@ -1,5 +1,3 @@
-import { CityType } from './mosks/types/city';
-
 export enum AppRoute {
   Main = '/',
   Login = '/login',
@@ -43,15 +41,6 @@ export enum Markers {
   URL_MARKER_CURRENT = '/markup/img/pin-active.svg',
 }
 
-export const DEFAULT_CITY: CityType = {
-  name: 'Amsterdam',
-  location: {
-    latitude: 52.3809553943508,
-    longitude: 4.939309666406198,
-    zoom: 11,
-  },
-};
-
 export enum SortType {
   Popular = 'Popular',
   LowToHigh = 'Price: low to high',
@@ -59,3 +48,10 @@ export enum SortType {
   TopRated = 'Top rated first',
 }
 
+export enum APIRout {
+  Offers = '/offers',
+  Login = '/login',
+  Logout = '/logout',
+}
+
+export const TIME_OUT_SHOW_ERROR = 2000;

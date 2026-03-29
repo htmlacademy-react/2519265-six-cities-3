@@ -4,11 +4,13 @@ import App from './components/app/app';
 import { user } from './mosks/user';
 import { comments } from './mosks/comments';
 import { offers } from './mosks/offers';
-import { AuthorizationStatus } from './const';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import Error from './components/error';
+import { checkAuthActions, fetchOffersActions } from './store/api-actions';
 
-const getAuthorizationStatus = AuthorizationStatus.Auth;
+store.dispatch(fetchOffersActions());
+store.dispatch(checkAuthActions());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -17,11 +19,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
+      <Error />
       <App
         user={user}
         comments={comments}
         offers={offers}
-        authorizationStatus={getAuthorizationStatus}
       />
     </Provider>
   </React.StrictMode>,
