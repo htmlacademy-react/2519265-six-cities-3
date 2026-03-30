@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import Login from '../../pages/login';
 import Offer from '../../pages/offer';
 import NotFound from '../../pages/notFound';
@@ -12,20 +12,28 @@ import { OfferType } from '../../mosks/types/offer';
 import FavoriteSection from '../../pages/favorites/favorite-section';
 import Main from '../../pages/main';
 import { isOfferForCard, isOfferForOffer } from '../../utils';
+import { useAppSelector } from '../../hooks';
+import Loader from '../loader';
 
 type AppScreenProps = {
   user: User & UserType;
   comments: CommentType[];
   offers: OfferType[];
-  authorizationStatus: string;
 };
 
 export default function App({
   user,
   comments,
   offers,
-  authorizationStatus,
 }: AppScreenProps) {
+
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const isLoadingOffers = useAppSelector((state) => state.isOffersLosdingStatus);
+
+  if(authorizationStatus === AuthorizationStatus.Unknown || isLoadingOffers) {
+    return <Loader/>;
+  }
+
   const favoritesPlaces = offers.filter(
     ({ isFavorite }) => isFavorite === true,
   );
