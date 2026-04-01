@@ -1,6 +1,6 @@
 import { OfferForCardType, OfferFullType } from './types/offer';
 
-export const offers: OfferFullType[] | OfferForCardType[] = [
+export const offersMock: OfferFullType[] | OfferForCardType[] = [
   {
     id: '6af6f711-c28d-4121-82cd-e0b462a27f00',
     title: 'Beautiful & luxurious studio at great location',

@@ -1,12 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../mosks/types/state';
-import { AxiosInstance } from 'axios';
-import { APIRout, AuthorizationStatus, TIME_OUT_SHOW_ERROR } from '../const';
-import { loadOffers, requireAutorization, setErrors, setOffersDataLoadingStatus } from './actions';
-import { OfferForCardType } from '../mosks/types/offer';
+import axios, { AxiosInstance } from 'axios';
+import { APIRoute, AppRoute, AuthorizationStatus, TIME_OUT_SHOW_ERROR } from '../const';
+import { loadComments, loadOffer, loadOffers, loadOffersNearby, redirectToRoute, requireAutorization, setErrors, setOffersDataLoadingStatus } from './actions';
+import { OfferForCardType, OfferFullType } from '../mosks/types/offer';
 import { AuthDataType } from '../mosks/types/auth-data';
 import { dropToken, setToken } from '../services/token';
 import { UserDataType } from '../mosks/types/user-data';
+import { CommentType } from '../mosks/types/comment';
 
 export const clearErrorsAction = createAsyncThunk<void, undefined, {dispatch: AppDispatch}>(
   'offers/clearError',
@@ -26,9 +27,61 @@ export const fetchOffersActions = createAsyncThunk<void, undefined, {
   'data/fetchOffers',
   async(_arg, {dispatch, extra: api}) => {
     dispatch(setOffersDataLoadingStatus(true));
-    const {data} = await api.get<OfferForCardType []>(APIRout.Offers);
+    const {data} = await api.get<OfferForCardType []>(APIRoute.Offers);
     dispatch(setOffersDataLoadingStatus(false));
     dispatch(loadOffers(data));
+  }
+);
+
+export const fetchOfferActions = createAsyncThunk<void, string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchOffer',
+  async(id, {dispatch, extra: api}) => {
+    try {
+      dispatch(setOffersDataLoadingStatus(true));
+      const {data} = await api.get<OfferFullType>(`${APIRoute.Offers}/${id}`);
+      dispatch(loadOffer(data));
+    } catch {
+      redirectToRoute(AppRoute.NotFound);
+    } finally {
+      dispatch(setOffersDataLoadingStatus(false));
+    }
+  }
+);
+
+export const fetchOffersNearbyActions = createAsyncThunk<void, string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchOffersNearby',
+  async(id, {dispatch, extra: api}) => {
+    dispatch(setOffersDataLoadingStatus(true));
+    const {data} = await api.get<OfferForCardType []>(`${APIRoute.Offers}/${id}${APIRoute.offersNearby}`);
+    dispatch(setOffersDataLoadingStatus(false));
+    dispatch(loadOffersNearby(data));
+  }
+);
+
+export const fetchCommentsActions = createAsyncThunk<void, string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchOffer',
+  async(id, {dispatch, extra: api}) => {
+    try {
+      dispatch(setOffersDataLoadingStatus(true));
+      const {data} = await api.get<CommentType []>(`${APIRoute.Comments}/${id}`);
+      dispatch(loadComments(data));
+    } catch {
+      dispatch(loadComments([]));
+    } finally {
+      dispatch(setOffersDataLoadingStatus(false));
+    }
   }
 );
 
@@ -40,7 +93,7 @@ export const checkAuthActions = createAsyncThunk<void, undefined, {
   'user/checkAuth',
   async(_arg, {dispatch, extra: api}) => {
     try {
-      await api.get(APIRout.Login);
+      await api.get(APIRoute.Login);
       dispatch(requireAutorization(AuthorizationStatus.Auth));
     } catch {
       dispatch(requireAutorization(AuthorizationStatus.NoAuth));
@@ -52,12 +105,26 @@ export const loginUser = createAsyncThunk<void, AuthDataType, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
+  rejectValue: string;
 }>(
   'user/login',
-  async({login: email, password}, {dispatch, extra: api}) => {
-    const {data: {token}} = await api.post<UserDataType>(APIRout.Login, {email, password});
-    setToken(token);
-    dispatch(requireAutorization(AuthorizationStatus.Auth));
+  async({login: email, password}, {dispatch, extra: api, rejectWithValue}) => {
+    try {
+      const {data: {token}} = await api.post<UserDataType>(APIRoute.Login, {email, password});
+      setToken(token);
+      dispatch(requireAutorization(AuthorizationStatus.Auth));
+      dispatch(redirectToRoute(AppRoute.Main));
+    } catch(err) {
+      let errorMessage = 'Произошла ошибка';
+
+      if (axios.isAxiosError(err)) {
+        errorMessage = err.response?.statusText ?? err.message;
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+      dispatch(setErrors('Ошибка авторизации'));
+      return rejectWithValue(errorMessage);
+    }
   }
 );
 
@@ -68,7 +135,7 @@ export const logoutUser = createAsyncThunk<void, undefined, {
 }>(
   'user/logout',
   async(_arg, {dispatch, extra: api}) => {
-    await api.delete(APIRout.Logout);
+    await api.delete(APIRoute.Logout);
     dropToken();
     dispatch(requireAutorization(AuthorizationStatus.NoAuth));
   }

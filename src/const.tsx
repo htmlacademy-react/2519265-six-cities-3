@@ -3,9 +3,10 @@ export enum AppRoute {
   Login = '/login',
   Favorites = '/favorites',
   Offer = '/offer',
+  NotFound = '*',
 }
 
-export const getOfferPath = (id: string | number) =>`${AppRoute.Offer}/${id}`;
+// export const getOfferPath = (id: string | number) =>`${AppRoute.Offer}/${id}`;
 
 export enum AuthorizationStatus {
   Auth = 'AUTH',
@@ -48,10 +49,13 @@ export enum SortType {
   TopRated = 'Top rated first',
 }
 
-export enum APIRout {
+export enum APIRoute {
   Offers = '/offers',
   Login = '/login',
   Logout = '/logout',
+  Offer = '/offer',
+  Comments = '/comments',
+  offersNearby = '/nearby',
 }
 
 export const TIME_OUT_SHOW_ERROR = 2000;

@@ -1,38 +1,43 @@
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import OfferGallery from '../components/offer/offer-gallery';
 import OfferInside from '../components/offer/offer-inside';
-import { OfferForCardType, OfferFullType } from '../mosks/types/offer';
 import { BookmarkClassName } from '../const';
-import { CommentType } from '../mosks/types/comment';
 import OfferReviews from '../components/offer/offer-reviews';
 import { getWidthForRating } from '../utils';
 import Map from '../components/map/map';
 import Card from '../components/main/card';
+import { fetchCommentsActions, fetchOfferActions, fetchOffersNearbyActions } from '../store/api-actions';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../hooks';
 
-type OfferProps = {
-  offers: OfferFullType[];
-  offersForCards: OfferForCardType[];
-  comments: CommentType[];
-  authorizationStatus: string;
-};
+export default function Offer(): JSX.Element | null {
 
-export default function Offer({
-  offers,
-  offersForCards,
-  comments,
-  authorizationStatus,
-}: OfferProps): JSX.Element | null {
-  const location = useLocation();
-  const offerId = location.pathname.split('/').filter(Boolean).at(-1) ?? null;
+  const { id } = useParams<{ id: string }>();
 
-  const currentOffer = offers.find(({ id }) => id === offerId);
+  const dispatch = useAppDispatch();
+
+  const isOfferLoadingStatus = useAppSelector((state) => state.isOffersLoadingStatus);
+  const currentOffer = useAppSelector((state) => state.offer);
+  const comments = useAppSelector((state) => state.comments);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const offersForCards = useAppSelector((state) => state.offersNearby);
+
+  useEffect(() => {
+
+    if (id && !isOfferLoadingStatus && currentOffer?.id !== id) {
+
+      dispatch(fetchOfferActions(id));
+      dispatch(fetchCommentsActions(id));
+      dispatch(fetchOffersNearbyActions(id));
+    }
+  }, [id, dispatch, isOfferLoadingStatus, currentOffer]);
+
 
   if (!currentOffer) {
     return null;
   }
 
   const {
-    id,
     title,
     rating,
     price,
@@ -148,7 +153,7 @@ export default function Offer({
               : offersCard
           }
           city={city}
-          currentCardId={offerId}
+          currentCardId={id ? id : null}
           className="offer__map map"
         />
       </section>

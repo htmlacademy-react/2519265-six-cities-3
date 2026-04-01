@@ -1,9 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
-import { user } from './mosks/user';
-import { comments } from './mosks/comments';
-import { offers } from './mosks/offers';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import Error from './components/error';
@@ -20,11 +17,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <Error />
-      <App
-        user={user}
-        comments={comments}
-        offers={offers}
-      />
+      <App />
     </Provider>
   </React.StrictMode>,
 );

@@ -1,6 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
-import { OfferForCardType } from '../mosks/types/offer';
-import { AuthorizationStatus, SortType } from '../const';
+import { OfferForCardType, OfferFullType } from '../mosks/types/offer';
+import { AppRoute, AuthorizationStatus, SortType } from '../const';
+import { CommentType } from '../mosks/types/comment';
 
 export const setCity = createAction<string>('city/setCity');
 
@@ -17,8 +18,16 @@ export const sortingMap: Record<string, SortFunction> = {
 
 export const loadOffers = createAction<OfferForCardType []>('data/loadOffers');
 
+export const loadOffer = createAction<OfferFullType>('data/loadOffer');
+
+export const loadOffersNearby = createAction<OfferForCardType []>('data/loadOffersNearby');
+
 export const requireAutorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 
 export const setErrors = createAction<string | null>('offers/setErrors');
 
 export const setOffersDataLoadingStatus = createAction<boolean>('data/setOffersDataLoadingStatus');
+
+export const redirectToRoute = createAction<AppRoute>('app/redirectToRoute');
+
+export const loadComments = createAction<CommentType [] | []>('data/loadComments');

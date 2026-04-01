@@ -2,15 +2,22 @@ import { Link } from 'react-router-dom';
 import { User } from '../../mosks/types/comment';
 import { UserType } from '../../mosks/types/user-type';
 import { AuthorizationStatus } from '../../const';
+import { useAppDispatch } from '../../hooks';
+import { logoutUser } from '../../store/api-actions';
 
 type Authorization = {
   user: User & UserType;
   favoritePlacesCount: number;
   authorizationStatus: string;
-}
+};
 
-export default function HeaderNav({user, favoritePlacesCount, authorizationStatus}: Authorization): JSX.Element {
-  const isAuth = (authorizationStatus === String(AuthorizationStatus.Auth));
+export default function HeaderNav({
+  user,
+  favoritePlacesCount,
+  authorizationStatus,
+}: Authorization): JSX.Element {
+  const isAuth = authorizationStatus === String(AuthorizationStatus.Auth);
+  const dispatch = useAppDispatch();
   return (
     <nav className="header__nav">
       <ul className="header__nav-list">
@@ -25,29 +32,37 @@ export default function HeaderNav({user, favoritePlacesCount, authorizationStatu
                 <span className="header__user-name user__name">
                   {user.email}
                 </span>
-                <span className="header__favorite-count">{favoritePlacesCount}</span>
+                <span className="header__favorite-count">
+                  {favoritePlacesCount}
+                </span>
               </Link>
             </li>
 
             <li className="header__nav-item">
-              <Link to="/login" className="header__nav-link">
+              <Link
+                to="/"
+                className="header__nav-link"
+                onClick={(evt) => {
+                  evt.preventDefault();
+                  dispatch(logoutUser());
+                }}
+              >
                 <span className="header__signout">Sign out</span>
-
               </Link>
             </li>
           </>
-
         )}
         {!isAuth && (
           <li className="header__nav-item user">
-            <Link to="/login" className="header__nav-link header__nav-link--profile">
-              <div className="header__avatar-wrapper user__avatar-wrapper">
-              </div>
+            <Link
+              to="/login"
+              className="header__nav-link header__nav-link--profile"
+            >
+              <div className="header__avatar-wrapper user__avatar-wrapper"></div>
               <span className="header__login">Sign in</span>
             </Link>
           </li>
         )}
-
       </ul>
     </nav>
   );

@@ -3,11 +3,6 @@ import { SortType } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setSortType } from '../../store/actions';
 
-// type SortingProps = {
-//   sorting: boolean;
-//   onClick: (value: boolean) => void;
-// };
-
 export default function Sorting(): JSX.Element {
   const dispatch = useAppDispatch();
   const activeSortType = useAppSelector((state) => state.activeSortType);

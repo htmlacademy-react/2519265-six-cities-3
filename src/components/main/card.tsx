@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { OfferForCardType } from '../../mosks/types/offer';
-import { BookmarkClassName, getOfferPath } from '../../const';
+import { AppRoute, BookmarkClassName } from '../../const';
 import { getWidthForRating } from '../../utils';
 
 export type CardProps = {
@@ -9,14 +9,15 @@ export type CardProps = {
 };
 
 export default function Card({ offer, onHover }: CardProps): JSX.Element {
-  const { id, title, isFavorite, type } = offer;
+
+  const {id, title, isFavorite, type } = offer;
   return (
     <article className="cities__card place-card"
       onMouseEnter={() => onHover?.(id)}
       onMouseLeave={() => onHover?.(null)}
     >
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={getOfferPath(id)}>
+        <Link to={`${AppRoute.Offer}/${id}`}>
           <img
             className="place-card__image"
             src={offer.previewImage}

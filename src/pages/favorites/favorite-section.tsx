@@ -1,11 +1,6 @@
 import { useAppSelector } from '../../hooks';
-// import { OfferForCardType } from '../../mosks/types/offer';
 import Favorites from './favorites';
 import FavoritesEmpty from './favorites-empty';
-
-// type FavoriteSectionProps = {
-//   offersCard: OfferForCardType[];
-// };
 
 export default function FavoritesSection() {
 

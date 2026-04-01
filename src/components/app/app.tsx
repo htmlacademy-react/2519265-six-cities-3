@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import Login from '../../pages/login';
 import Offer from '../../pages/offer';
@@ -6,29 +6,19 @@ import NotFound from '../../pages/notFound';
 import PrivateRoute from '../privet-rout/privet-rout';
 import Layout from '../layout';
 import LayoutTools from '../layout-tools';
-import { CommentType, User } from '../../mosks/types/comment';
-import { UserType } from '../../mosks/types/user-type';
-import { OfferType } from '../../mosks/types/offer';
 import FavoriteSection from '../../pages/favorites/favorite-section';
 import Main from '../../pages/main';
-import { isOfferForCard, isOfferForOffer } from '../../utils';
 import { useAppSelector } from '../../hooks';
-import Loader from '../loader';
+import Loader from '../loader/loader';
+import { user } from '../../mosks/user';
+import HistoryRouter from '../history-route/history-route';
+import { browserHistory } from '../../browser-history';
 
-type AppScreenProps = {
-  user: User & UserType;
-  comments: CommentType[];
-  offers: OfferType[];
-};
-
-export default function App({
-  user,
-  comments,
-  offers,
-}: AppScreenProps) {
+export default function App() {
 
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isLoadingOffers = useAppSelector((state) => state.isOffersLosdingStatus);
+  const isLoadingOffers = useAppSelector((state) => state.isOffersLoadingStatus);
+  const offers = useAppSelector((state) => state.offers);
 
   if(authorizationStatus === AuthorizationStatus.Unknown || isLoadingOffers) {
     return <Loader/>;
@@ -38,12 +28,9 @@ export default function App({
     ({ isFavorite }) => isFavorite === true,
   );
 
-  const offersForCard = offers.filter(isOfferForCard);
-  const offersForOffer = offers.filter(isOfferForOffer);
-
   const favoritePlacesCount = favoritesPlaces.length;
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
         <Route
           element={
@@ -75,12 +62,7 @@ export default function App({
           <Route
             path={`${AppRoute.Offer}/:id`}
             element={
-              <Offer
-                offers={offersForOffer}
-                offersForCards={offersForCard}
-                comments={comments}
-                authorizationStatus={authorizationStatus}
-              />
+              <Offer />
             }
           >
           </Route>
@@ -89,6 +71,6 @@ export default function App({
 
         <Route path={AppRoute.Login} element={<Login />}></Route>
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }

@@ -1,7 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { loadOffers, requireAutorization, setCity, setErrors, setOffersDataLoadingStatus, setSortType, sortingMap } from './actions';
+import { loadComments, loadOffer, loadOffers, loadOffersNearby, requireAutorization, setCity, setErrors, setOffersDataLoadingStatus, setSortType, sortingMap } from './actions';
 import { AuthorizationStatus, SortType } from '../const';
-import { OfferForCardType } from '../mosks/types/offer';
+import { OfferForCardType, OfferFullType } from '../mosks/types/offer';
+import { CommentType } from '../mosks/types/comment';
 
 type InitialStateType = {
   city: string;
@@ -9,8 +10,11 @@ type InitialStateType = {
   activeSortType: SortType;
   offers: OfferForCardType[];
   authorizationStatus: AuthorizationStatus;
-  isOffersLosdingStatus: boolean;
+  isOffersLoadingStatus: boolean;
   errors: string | null;
+  offer: OfferFullType | null;
+  offersNearby: OfferForCardType [] | [];
+  comments: CommentType[] | [];
 };
 
 const initialState: InitialStateType = {
@@ -19,8 +23,11 @@ const initialState: InitialStateType = {
   activeSortType: SortType.Popular,
   offers: [],
   authorizationStatus: AuthorizationStatus.Unknown,
-  isOffersLosdingStatus: false,
+  isOffersLoadingStatus: false,
   errors: null,
+  offer: null,
+  offersNearby: [],
+  comments: [],
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -39,12 +46,21 @@ export const reducer = createReducer(initialState, (builder) => {
       state.offersOfCity = state.offers.filter((offer) => offer.city.name === state.city);
     })
     .addCase(setOffersDataLoadingStatus, (state, action) => {
-      state.isOffersLosdingStatus = action.payload;
+      state.isOffersLoadingStatus = action.payload;
     })
     .addCase(requireAutorization, (state, action) => {
       state.authorizationStatus = action.payload;
     })
     .addCase(setErrors, (state, action) => {
       state.errors = action.payload;
+    })
+    .addCase(loadOffer, (state, action) => {
+      state.offer = action.payload;
+    })
+    .addCase(loadOffersNearby, (state, action) => {
+      state.offersNearby = action.payload;
+    })
+    .addCase(loadComments, (state, action) => {
+      state.comments = action.payload;
     });
 });

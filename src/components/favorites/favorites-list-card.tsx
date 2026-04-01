@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { OfferForCardType } from '../../mosks/types/offer';
-import { BookmarkClassName, getOfferPath} from '../../const';
+import { AppRoute, BookmarkClassName} from '../../const';
 import { getWidthForRating } from '../../utils';
 
 export type FavoritesListCardProps = {
@@ -20,7 +20,7 @@ export default function FavoritesListCard({
       )}
 
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <Link to={getOfferPath(id)}>
+        <Link to={`${AppRoute.Offer}/${id}`}>
           <img
             className="place-card__image"
             src="img/apartment-small-03.jpg"
@@ -53,7 +53,7 @@ export default function FavoritesListCard({
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={getOfferPath(id)}>
+          <Link to={`${AppRoute.Offer}/${id}`}>
             {title}
           </Link>
         </h2>
