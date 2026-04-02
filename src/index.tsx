@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import Error from './components/error';
+import Error from './components/error/error';
 import { checkAuthActions, fetchOffersActions } from './store/api-actions';
 
 store.dispatch(fetchOffersActions());

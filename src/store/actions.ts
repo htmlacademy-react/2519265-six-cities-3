@@ -2,6 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 import { OfferForCardType, OfferFullType } from '../mosks/types/offer';
 import { AppRoute, AuthorizationStatus, SortType } from '../const';
 import { CommentType } from '../mosks/types/comment';
+import { UserType } from '../mosks/types/user-type';
 
 export const setCity = createAction<string>('city/setCity');
 
@@ -31,3 +32,5 @@ export const setOffersDataLoadingStatus = createAction<boolean>('data/setOffersD
 export const redirectToRoute = createAction<AppRoute>('app/redirectToRoute');
 
 export const loadComments = createAction<CommentType [] | []>('data/loadComments');
+
+export const userInfo = createAction<UserType | null>('data/userInfo');

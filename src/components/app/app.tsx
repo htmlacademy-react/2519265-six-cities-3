@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import Login from '../../pages/login';
 import Offer from '../../pages/offer';
-import NotFound from '../../pages/notFound';
+import NotFound from '../not-found/notFound';
 import PrivateRoute from '../privet-rout/privet-rout';
 import Layout from '../layout';
 import LayoutTools from '../layout-tools';
@@ -10,7 +10,6 @@ import FavoriteSection from '../../pages/favorites/favorite-section';
 import Main from '../../pages/main';
 import { useAppSelector } from '../../hooks';
 import Loader from '../loader/loader';
-import { user } from '../../mosks/user';
 import HistoryRouter from '../history-route/history-route';
 import { browserHistory } from '../../browser-history';
 
@@ -35,7 +34,6 @@ export default function App() {
         <Route
           element={
             <Layout
-              user={user}
               favoritePlacesCount={favoritePlacesCount}
               authorizationStatus={authorizationStatus}
             />
@@ -46,19 +44,17 @@ export default function App() {
             element={<Main />}
           >
           </Route>
-          {/* 2 */}
           <Route path={AppRoute.Favorites} element={<LayoutTools />}>
             <Route
               path={AppRoute.Favorites}
               element={
-                <PrivateRoute authorizationStatus={authorizationStatus}>
+                <PrivateRoute >
                   <FavoriteSection />
                 </PrivateRoute>
               }
             >
             </Route>
           </Route>
-          {/* 3 */}
           <Route
             path={`${AppRoute.Offer}/:id`}
             element={

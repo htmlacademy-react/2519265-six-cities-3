@@ -1,18 +1,16 @@
 import { Link } from 'react-router-dom';
-import { User } from '../../mosks/types/comment';
-import { UserType } from '../../mosks/types/user-type';
 import { AuthorizationStatus } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { logoutUser } from '../../store/api-actions';
 
 type Authorization = {
-  user: User & UserType;
+  userName: string;
   favoritePlacesCount: number;
   authorizationStatus: string;
 };
 
 export default function HeaderNav({
-  user,
+  userName,
   favoritePlacesCount,
   authorizationStatus,
 }: Authorization): JSX.Element {
@@ -30,7 +28,7 @@ export default function HeaderNav({
               >
                 <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                 <span className="header__user-name user__name">
-                  {user.email}
+                  {userName}
                 </span>
                 <span className="header__favorite-count">
                   {favoritePlacesCount}

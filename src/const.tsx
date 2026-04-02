@@ -59,3 +59,11 @@ export enum APIRoute {
 }
 
 export const TIME_OUT_SHOW_ERROR = 2000;
+
+export const MAX_LENGHT_COMMENT = 300;
+
+export const MIN_LENGHT_COMMENT = 50;
+
+export const MIN_RATING_COMMENT = 0;
+
+

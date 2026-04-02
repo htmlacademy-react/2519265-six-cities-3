@@ -1,8 +1,20 @@
-import {Fragment, ReactEventHandler, useState } from 'react';
+import {
+  FormEvent,
+  Fragment,
+  // ReactEventHandler,
+  useRef,
+  useState,
+  // useState,
+} from 'react';
+import { ReviewDataType } from '../../mosks/types/review-data-type';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { postReview } from '../../store/api-actions';
+import { MIN_LENGHT_COMMENT, MIN_RATING_COMMENT } from '../../const';
+// import { useAppDispatch } from '../../hooks';
 
-type ChangeHandlerType = ReactEventHandler<
-  HTMLInputElement | HTMLTextAreaElement
->;
+// type ChangeHandlerType = ReactEventHandler<
+//   HTMLInputElement | HTMLTextAreaElement
+// >;
 
 const ratingStars = [
   { value: 5, label: 'perfect' },
@@ -13,22 +25,40 @@ const ratingStars = [
 ];
 
 export default function OfferForm() {
-  const [newComment, setNewComment] = useState({
-    rating: 0,
-    review: '',
-  });
 
-  const handleChange: ChangeHandlerType = (evt) => {
-    const { name, value } = evt.currentTarget;
-    setNewComment({ ...newComment, [name]: value });
+  const dispatch = useAppDispatch();
+  const offer = useAppSelector((state) => state.offer);
+
+  const onSubmit = (data: ReviewDataType) => {
+    if(offer?.id) {
+      dispatch(postReview({data: data, id: offer.id}));
+    }
   };
 
+  // const ratingRef = useRef<HTMLInputElement | null>(null);
+  const reviewRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const [newComment, setNewComment] = useState<number>(0);
+  const [newRating, setNewRating] = useState<string>('0');
+
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    if (reviewRef.current !== null) {
+      onSubmit({
+        // rating: Number(ratingRef.current.value),
+        rating: Number(newRating),
+        comment: reviewRef.current.value,
+      });
+      // ratingRef.current.value = '';
+      setNewRating('0');
+      reviewRef.current.value = '';
+    }
+  };
+
+  const isDesabled = Number(newComment) <= MIN_LENGHT_COMMENT || Number(newRating) === MIN_RATING_COMMENT;
+
   return (
-    <form
-      className="reviews__form form"
-      action="#"
-      method="post"
-    >
+    <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit}>
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
@@ -41,7 +71,9 @@ export default function OfferForm() {
               value={value}
               id={`${value}-stars`}
               type="radio"
-              onChange={handleChange}
+              checked={newRating === String(value)}
+              // ref={ratingRef}
+              onChange={() => setNewRating(String(value))}
             />
             <label
               htmlFor={`${value}-stars`}
@@ -60,7 +92,8 @@ export default function OfferForm() {
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
-        onChange={handleChange}
+        ref={reviewRef}
+        onChange={() => setNewComment(reviewRef.current?.value.length ?? 0)}
       >
       </textarea>
       <div className="reviews__button-wrapper">
@@ -72,7 +105,7 @@ export default function OfferForm() {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={newComment.review.length < 50 || newComment.rating === 0}
+          disabled={isDesabled}
         >
           Submit
         </button>

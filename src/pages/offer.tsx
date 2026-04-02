@@ -20,7 +20,8 @@ export default function Offer(): JSX.Element | null {
   const currentOffer = useAppSelector((state) => state.offer);
   const comments = useAppSelector((state) => state.comments);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const offersForCards = useAppSelector((state) => state.offersNearby);
+  const offersNearby = useAppSelector((state) => state.offersNearby);
+  const offersForCards = useAppSelector((state) => state.offers);
 
   useEffect(() => {
 
@@ -53,7 +54,7 @@ export default function Offer(): JSX.Element | null {
     city,
   } = currentOffer;
 
-  const offersCard = offersForCards
+  const offersCard = offersNearby
     .filter((offer) => offer.city.name === city.name && offer.id !== id)
     .slice(0, 3);
   const currentOfferForCard = offersForCards.find((offer) => offer.id === id);
@@ -133,11 +134,6 @@ export default function Offer(): JSX.Element | null {
               </div>
               <div className="offer__description">
                 <p className="offer__text">{description}</p>
-                <p className="offer__text">
-                  An independent House, strategically located between Rembrand
-                  Square and National Opera, but where the bustle of the city
-                  comes to rest in this alley flowery and colorful.
-                </p>
               </div>
             </div>
             <OfferReviews
