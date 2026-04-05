@@ -1,4 +1,4 @@
-import { CommentType } from '../../mosks/types/comment';
+import { CommentType } from '../../types/comment';
 import OfferForm from './offer-form';
 import OfferReviewsList from './offer-review-list';
 

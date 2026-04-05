@@ -2,15 +2,16 @@ import { Link } from 'react-router-dom';
 import { AuthorizationStatus } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { logoutUser } from '../../store/api-actions';
+import { UserDataType } from '../../types/user-data';
 
 type Authorization = {
-  userName: string;
+  user: UserDataType | null;
   favoritePlacesCount: number;
   authorizationStatus: string;
 };
 
 export default function HeaderNav({
-  userName,
+  user,
   favoritePlacesCount,
   authorizationStatus,
 }: Authorization): JSX.Element {
@@ -26,9 +27,11 @@ export default function HeaderNav({
                 to="/favorites"
                 className="header__nav-link header__nav-link--profile"
               >
-                <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+                <div className="header__avatar-wrapper user__avatar-wrapper">
+                  <img src={user?.avatarUrl} alt={user?.name} />
+                </div>
                 <span className="header__user-name user__name">
-                  {userName}
+                  {user?.name}
                 </span>
                 <span className="header__favorite-count">
                   {favoritePlacesCount}

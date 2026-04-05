@@ -1,5 +1,5 @@
-import { OfferForCardType } from '../../mosks/types/offer';
-import FavoritesListItem from './favorites-list-tem';
+import { OfferForCardType } from '../../types/offer';
+import FavoritesListItem from './favorites-list-item';
 
 export type FavoritesListProps = {
   offersCard: OfferForCardType[];

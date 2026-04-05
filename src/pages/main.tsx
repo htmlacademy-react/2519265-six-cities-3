@@ -2,12 +2,13 @@ import LocationList from '../components/main/location-list';
 import MainWithPlaces from '../components/main/main-with-places';
 import MainWithoutPlaces from '../components/main/main-without-places';
 import { useAppSelector } from '../hooks';
+import { getCity, getOffersOfCity } from '../store/offers/selectors';
 
 export default function MainWithElements(): JSX.Element {
 
-  const offersCards = useAppSelector((state) => state.offersOfCity);
+  const offersCards = useAppSelector(getOffersOfCity);
 
-  const city = useAppSelector((state) => state.city);
+  const city = useAppSelector(getCity);
   const isPlaces: boolean = offersCards.length > 0;
 
   return (

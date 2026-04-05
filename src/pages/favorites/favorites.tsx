@@ -1,5 +1,5 @@
 import FavoritesList from '../../components/favorites/favorites-list';
-import { OfferForCardType } from '../../mosks/types/offer';
+import { OfferForCardType } from '../../types/offer';
 
 export type FavoritesProps = {
   offersCard: OfferForCardType[];

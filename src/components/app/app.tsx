@@ -12,22 +12,21 @@ import { useAppSelector } from '../../hooks';
 import Loader from '../loader/loader';
 import HistoryRouter from '../history-route/history-route';
 import { browserHistory } from '../../browser-history';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { getFavoritesOffers, getIsOffersLoadingStatus } from '../../store/offers/selectors';
 
 export default function App() {
 
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isLoadingOffers = useAppSelector((state) => state.isOffersLoadingStatus);
-  const offers = useAppSelector((state) => state.offers);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isLoadingOffers = useAppSelector(getIsOffersLoadingStatus);
+  // const offers = useAppSelector((state) => state.offers);
+  const favoritesOffers = useAppSelector(getFavoritesOffers);
 
   if(authorizationStatus === AuthorizationStatus.Unknown || isLoadingOffers) {
     return <Loader/>;
   }
 
-  const favoritesPlaces = offers.filter(
-    ({ isFavorite }) => isFavorite === true,
-  );
-
-  const favoritePlacesCount = favoritesPlaces.length;
+  const favoritePlacesCount = favoritesOffers.length;
   return (
     <HistoryRouter history={browserHistory}>
       <Routes>
@@ -49,7 +48,7 @@ export default function App() {
               path={AppRoute.Favorites}
               element={
                 <PrivateRoute >
-                  <FavoriteSection />
+                  <FavoriteSection favoritesOffers={favoritesOffers} />
                 </PrivateRoute>
               }
             >

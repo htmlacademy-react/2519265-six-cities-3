@@ -3,12 +3,13 @@ import Map from '../map/map';
 import Card from './card';
 import Sorting from './sorting';
 import { useAppSelector } from '../../hooks';
+import { getCity, getOffersOfCity } from '../../store/offers/selectors';
 
 export default function MainWithPlaces(): JSX.Element {
   const [currentCardId, setCurrentCardId] = useState<string | null>(null);
 
-  const offersCards = useAppSelector((state) => state.offersOfCity);
-  const cityName = useAppSelector((state) => state.city);
+  const offersCards = useAppSelector(getOffersOfCity);
+  const cityName = useAppSelector(getCity);
 
   const city = offersCards[0].city;
 

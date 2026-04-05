@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { OfferForCardType } from '../../mosks/types/offer';
+import { OfferForCardType } from '../../types/offer';
 import { AppRoute, BookmarkClassName} from '../../const';
 import { getWidthForRating } from '../../utils';
 

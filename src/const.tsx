@@ -56,6 +56,7 @@ export enum APIRoute {
   Offer = '/offer',
   Comments = '/comments',
   offersNearby = '/nearby',
+  Favorites = '/favorites',
 }
 
 export const TIME_OUT_SHOW_ERROR = 2000;
@@ -66,4 +67,17 @@ export const MIN_LENGHT_COMMENT = 50;
 
 export const MIN_RATING_COMMENT = 0;
 
+export enum NAME_SPACE {
+  User = 'USER',
+  Offer = 'OFFER',
+  Offers = 'OFFERS',
+}
 
+export const CITIES_NAME: string[] = [
+  'Paris',
+  'Cologne',
+  'Brussels',
+  'Amsterdam',
+  'Hamburg',
+  'Dusseldorf',
+];

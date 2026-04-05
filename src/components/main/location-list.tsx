@@ -1,6 +1,7 @@
+import { CITIES_NAME } from '../../const';
 import { useAppDispatch } from '../../hooks';
-import { CITIES_NAME } from '../../mosks/mock';
-import { setCity } from '../../store/actions';
+import { setCity } from '../../store/offers/offers-process';
+// import { setCity } from '../../store/actions';
 import LocationItem from './location-item';
 
 type LocationListProps = {

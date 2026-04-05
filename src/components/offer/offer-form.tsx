@@ -6,10 +6,11 @@ import {
   useState,
   // useState,
 } from 'react';
-import { ReviewDataType } from '../../mosks/types/review-data-type';
+import { ReviewDataType } from '../../types/review-data-type';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { postReview } from '../../store/api-actions';
-import { MIN_LENGHT_COMMENT, MIN_RATING_COMMENT } from '../../const';
+import { MAX_LENGHT_COMMENT, MIN_LENGHT_COMMENT, MIN_RATING_COMMENT } from '../../const';
+import { getOffer } from '../../store/offer/selectors';
 // import { useAppDispatch } from '../../hooks';
 
 // type ChangeHandlerType = ReactEventHandler<
@@ -27,7 +28,7 @@ const ratingStars = [
 export default function OfferForm() {
 
   const dispatch = useAppDispatch();
-  const offer = useAppSelector((state) => state.offer);
+  const offer = useAppSelector(getOffer);
 
   const onSubmit = (data: ReviewDataType) => {
     if(offer?.id) {
@@ -35,7 +36,6 @@ export default function OfferForm() {
     }
   };
 
-  // const ratingRef = useRef<HTMLInputElement | null>(null);
   const reviewRef = useRef<HTMLTextAreaElement | null>(null);
 
   const [newComment, setNewComment] = useState<number>(0);
@@ -45,11 +45,9 @@ export default function OfferForm() {
     evt.preventDefault();
     if (reviewRef.current !== null) {
       onSubmit({
-        // rating: Number(ratingRef.current.value),
         rating: Number(newRating),
         comment: reviewRef.current.value,
       });
-      // ratingRef.current.value = '';
       setNewRating('0');
       reviewRef.current.value = '';
     }
@@ -72,7 +70,6 @@ export default function OfferForm() {
               id={`${value}-stars`}
               type="radio"
               checked={newRating === String(value)}
-              // ref={ratingRef}
               onChange={() => setNewRating(String(value))}
             />
             <label
@@ -93,6 +90,7 @@ export default function OfferForm() {
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         ref={reviewRef}
+        maxLength={MAX_LENGHT_COMMENT}
         onChange={() => setNewComment(reviewRef.current?.value.length ?? 0)}
       >
       </textarea>

@@ -1,40 +1,56 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import OfferGallery from '../components/offer/offer-gallery';
 import OfferInside from '../components/offer/offer-inside';
-import { BookmarkClassName } from '../const';
+import { AppRoute, BookmarkClassName } from '../const';
 import OfferReviews from '../components/offer/offer-reviews';
 import { getWidthForRating } from '../utils';
 import Map from '../components/map/map';
 import Card from '../components/main/card';
-import { fetchCommentsActions, fetchOfferActions, fetchOffersNearbyActions } from '../store/api-actions';
+import {
+  fetchCommentsActions,
+  fetchOfferActions,
+  fetchOffersNearbyActions,
+} from '../store/api-actions';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
+import { getIsOffersLoadingStatus, getOffers } from '../store/offers/selectors';
+import {
+  getComments,
+  getHasError,
+  getOffer,
+  getOffersNearby,
+} from '../store/offer/selectors';
+import { getAuthorizationStatus } from '../store/user-process/selectors';
 
 export default function Offer(): JSX.Element | null {
-
   const { id } = useParams<{ id: string }>();
 
   const dispatch = useAppDispatch();
 
-  const isOfferLoadingStatus = useAppSelector((state) => state.isOffersLoadingStatus);
-  const currentOffer = useAppSelector((state) => state.offer);
-  const comments = useAppSelector((state) => state.comments);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const offersNearby = useAppSelector((state) => state.offersNearby);
-  const offersForCards = useAppSelector((state) => state.offers);
+  const isOfferLoadingStatus = useAppSelector(getIsOffersLoadingStatus);
+  const currentOffer = useAppSelector(getOffer);
+  const comments = useAppSelector(getComments);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const offersNearby = useAppSelector(getOffersNearby);
+  const offersForCards = useAppSelector(getOffers);
+  const isError = useAppSelector(getHasError);
+  const navigate = useNavigate();
 
   useEffect(() => {
-
     if (id && !isOfferLoadingStatus && currentOffer?.id !== id) {
-
       dispatch(fetchOfferActions(id));
       dispatch(fetchCommentsActions(id));
       dispatch(fetchOffersNearbyActions(id));
     }
   }, [id, dispatch, isOfferLoadingStatus, currentOffer]);
 
+  useEffect(() => {
+    if (isError) {
+      navigate(AppRoute.NotFound);
+    }
+  }, [isError, navigate]);
 
-  if (!currentOffer) {
+  if(!currentOffer) {
     return null;
   }
 
