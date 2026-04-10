@@ -1,22 +1,22 @@
+import { memo } from 'react';
+import { CITIES_NAME } from '../../const';
 import { useAppDispatch } from '../../hooks';
-import { CITIES_NAME } from '../../mosks/mock';
-import { setCity } from '../../store/actions';
-import LocationItem from './location-item';
+import { setCity } from '../../store/offers/offers-process';
+import {LocationItem} from './location-item';
 
 type LocationListProps = {
   activeCity: string;
 };
 
-export default function LocationList({
+export const LocationList = memo(({
   activeCity,
-}: LocationListProps): JSX.Element {
+}: LocationListProps): JSX.Element => {
 
   const dispatch = useAppDispatch();
 
   return (
     <section className="locations container">
       <ul className="locations__list tabs__list">
-        {/* элементы списка */}
 
         {CITIES_NAME.map((city) => (
           <LocationItem
@@ -29,4 +29,6 @@ export default function LocationList({
       </ul>
     </section>
   );
-}
+});
+
+LocationList.displayName = 'LocationList';

@@ -1,16 +1,36 @@
-import { useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import Map from '../map/map';
-import Card from './card';
-import Sorting from './sorting';
-import { useAppSelector } from '../../hooks';
+import {Card} from './card';
+import {Sorting} from './sorting';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getActiveSortType, getCity } from '../../store/offers/selectors';
+import { toggleFavoriteOffer } from '../../store/api-actions';
+import { sortingMap } from '../../store/actions';
+import { OfferForCardType } from '../../types/offer';
+import { CityType } from '../../types/city';
 
-export default function MainWithPlaces(): JSX.Element {
+type MainWithPlacesProps = {
+  offersOfCity: OfferForCardType[];
+  city: CityType;
+}
+
+export const MainWithPlaces = memo(({offersOfCity, city}: MainWithPlacesProps): JSX.Element => {
+
+  const dispatch = useAppDispatch();
+
+  const handleFavoriteClick = useCallback((data: {id: string; status: boolean}) => {
+    dispatch(toggleFavoriteOffer(data));
+  }, [dispatch]);
   const [currentCardId, setCurrentCardId] = useState<string | null>(null);
 
-  const offersCards = useAppSelector((state) => state.offersOfCity);
-  const cityName = useAppSelector((state) => state.city);
+  const handleCardHover = useCallback((id: string | null) => {
+    setCurrentCardId(id);
+  }, []);
 
-  const city = offersCards[0].city;
+  const cityName = useAppSelector(getCity);
+  const sortType = useAppSelector(getActiveSortType);
+
+  const offersCards = useMemo(()=> sortingMap[sortType](offersOfCity), [offersOfCity, sortType]);
 
   return (
     <div className="cities__places-container container">
@@ -22,7 +42,7 @@ export default function MainWithPlaces(): JSX.Element {
         <Sorting />
         <div className="cities__places-list places__list tabs__content">
           {offersCards.map((offer) => (
-            <Card key={offer.id} offer={offer} onHover={setCurrentCardId} />
+            <Card key={offer.id} offer={offer} onClick={handleFavoriteClick} onHover={handleCardHover} />
           ))}
         </div>
       </section>
@@ -31,4 +51,6 @@ export default function MainWithPlaces(): JSX.Element {
       </div>
     </div>
   );
-}
+});
+
+MainWithPlaces.displayName = 'MainWithPlaces';

@@ -1,5 +1,5 @@
 import { DateFormat } from '../../const';
-import { CommentType } from '../../mosks/types/comment';
+import { CommentType } from '../../types/comment';
 import dayjs from 'dayjs';
 import { getWidthForRating } from '../../utils';
 

@@ -1,6 +1,6 @@
 import {useEffect, useState, useRef} from 'react';
 import leaflet, {Map} from 'leaflet';
-import { CityType } from '../../mosks/types/city';
+import { CityType } from '../../types/city';
 
 type UseMapProps = {
   city: CityType;

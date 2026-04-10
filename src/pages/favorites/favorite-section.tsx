@@ -1,15 +1,15 @@
 import { useAppSelector } from '../../hooks';
+import { getFavoritesOffers } from '../../store/offers/selectors';
 import Favorites from './favorites';
 import FavoritesEmpty from './favorites-empty';
 
 export default function FavoritesSection() {
+  const favoritesOffers = useAppSelector(getFavoritesOffers);
 
-  const offersCards = useAppSelector((state) => state.offers);
-  const favoriteOffers = offersCards.filter((offer) => offer.isFavorite === true);
-  const isFavoriteOffers: boolean = favoriteOffers.length > 0;
+  const isFavoriteOffers: boolean = favoritesOffers.length > 0;
   return (
     <>
-      {isFavoriteOffers && <Favorites offersCard={favoriteOffers} />}
+      {isFavoriteOffers && <Favorites offersCard={favoritesOffers} />}
       {!isFavoriteOffers && <FavoritesEmpty />}
     </>
   );

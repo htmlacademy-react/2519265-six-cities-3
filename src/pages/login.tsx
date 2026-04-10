@@ -1,18 +1,17 @@
 import { FormEvent, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthDataType } from '../mosks/types/auth-data';
+import { AuthDataType } from '../types/auth-data';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { loginUser } from '../store/api-actions';
-import { setCity } from '../store/actions';
-
-// const passwordPattern = /^[a-zA-Z0-9]+$/;
+import { getCity } from '../store/offers/selectors';
+import { setCity } from '../store/offers/offers-process';
 
 export default function Login(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useAppDispatch();
-  const city = useAppSelector((state) => state.city);
+  const city = useAppSelector(getCity);
 
   const onSubmit = (authData: AuthDataType) => {
     dispatch(loginUser(authData));
@@ -24,8 +23,6 @@ export default function Login(): JSX.Element {
     if (
       loginRef.current !== null &&
       passwordRef.current !== null
-      // passwordRef.current.value.trim() !== '' &&
-      // !passwordPattern.test(passwordRef.current.value)
     ) {
       onSubmit({
         login: loginRef.current.value,

@@ -1,40 +1,57 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import OfferGallery from '../components/offer/offer-gallery';
 import OfferInside from '../components/offer/offer-inside';
-import { BookmarkClassName } from '../const';
+import { AppRoute, BookmarkClassName } from '../const';
 import OfferReviews from '../components/offer/offer-reviews';
 import { getWidthForRating } from '../utils';
 import Map from '../components/map/map';
-import Card from '../components/main/card';
-import { fetchCommentsActions, fetchOfferActions, fetchOffersNearbyActions } from '../store/api-actions';
-import { useEffect } from 'react';
+import {Card} from '../components/main/card';
+import {
+  fetchCommentsActions,
+  fetchOfferActions,
+  fetchOffersNearbyActions,
+  toggleFavoriteOffer,
+} from '../store/api-actions';
+import { memo, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
+import { getIsOffersLoadingStatus, getOffers } from '../store/offers/selectors';
+import {
+  getComments,
+  getHasError,
+  getOffer,
+  getOffersNearby,
+} from '../store/offer/selectors';
+import { getAuthorizationStatus } from '../store/user-process/selectors';
 
-export default function Offer(): JSX.Element | null {
-
+export const Offer = memo((): JSX.Element | null => {
   const { id } = useParams<{ id: string }>();
 
   const dispatch = useAppDispatch();
 
-  const isOfferLoadingStatus = useAppSelector((state) => state.isOffersLoadingStatus);
-  const currentOffer = useAppSelector((state) => state.offer);
-  const comments = useAppSelector((state) => state.comments);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const offersNearby = useAppSelector((state) => state.offersNearby);
-  const offersForCards = useAppSelector((state) => state.offers);
+  const isOfferLoadingStatus = useAppSelector(getIsOffersLoadingStatus);
+  const currentOffer = useAppSelector(getOffer);
+  const comments = useAppSelector(getComments);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const offersNearby = useAppSelector(getOffersNearby);
+  const offersForCards = useAppSelector(getOffers);
+  const isError = useAppSelector(getHasError);
+  const navigate = useNavigate();
 
   useEffect(() => {
-
     if (id && !isOfferLoadingStatus && currentOffer?.id !== id) {
-
       dispatch(fetchOfferActions(id));
       dispatch(fetchCommentsActions(id));
       dispatch(fetchOffersNearbyActions(id));
     }
   }, [id, dispatch, isOfferLoadingStatus, currentOffer]);
 
+  useEffect(() => {
+    if (isError) {
+      navigate(AppRoute.NotFound);
+    }
+  }, [isError, navigate]);
 
-  if (!currentOffer) {
+  if(!currentOffer) {
     return null;
   }
 
@@ -53,6 +70,10 @@ export default function Offer(): JSX.Element | null {
     images,
     city,
   } = currentOffer;
+
+  const handleFavoriteClick = (data: {id: string; status: boolean}) => {
+    dispatch(toggleFavoriteOffer(data));
+  };
 
   const offersCard = offersNearby
     .filter((offer) => offer.city.name === city.name && offer.id !== id)
@@ -76,8 +97,9 @@ export default function Offer(): JSX.Element | null {
               <button
                 className={`offer__bookmark-button button ${isFavorite ? BookmarkClassName.PlaceCardActive : ''}`}
                 type="button"
+                onClick={() => handleFavoriteClick({id: currentOffer.id, status: !isFavorite})}
               >
-                <svg className="offer__bookmark-icon" width="31" height="33">
+                <svg className="offer__bookmark-icon place-card__bookmark-icon" width="31" height="33">
                   <use xlinkHref="#icon-bookmark"></use>
                 </svg>
                 <span className="visually-hidden">
@@ -160,11 +182,13 @@ export default function Offer(): JSX.Element | null {
           </h2>
           <div className="near-places__list places__list">
             {offersCard.map((offer) => (
-              <Card key={offer.id} offer={offer} />
+              <Card key={offer.id} offer={offer} onClick={handleFavoriteClick} />
             ))}
           </div>
         </section>
       </div>
     </main>
   );
-}
+});
+
+Offer.displayName = 'Offer';

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { memo } from 'react';
 
 type LocationItemValue = {
   cityName: string;
@@ -7,12 +8,8 @@ type LocationItemValue = {
   activeCity: string;
 };
 
-export default function LocationItem({
-  cityName,
-  onClick,
-  activeCity,
-}: LocationItemValue): JSX.Element {
-  return (
+export const LocationItem = memo(
+  ({ cityName, onClick, activeCity }: LocationItemValue): JSX.Element => (
     <li className="locations__item">
       <Link
         to={AppRoute.Main}
@@ -25,5 +22,7 @@ export default function LocationItem({
         <span>{cityName}</span>
       </Link>
     </li>
-  );
-}
+  ),
+);
+
+LocationItem.displayName = 'LocationItem';

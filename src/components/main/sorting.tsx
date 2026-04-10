@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { SortType } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setSortType } from '../../store/actions';
+import { getActiveSortType, getCity } from '../../store/offers/selectors';
+import { setSortType } from '../../store/offers/offers-process';
 
-export default function Sorting(): JSX.Element {
+export const Sorting = memo((): JSX.Element => {
   const dispatch = useAppDispatch();
-  const activeSortType = useAppSelector((state) => state.activeSortType);
-  const cityName = useAppSelector((state) => state.city);
+  const activeSortType = useAppSelector(getActiveSortType);
+  const cityName = useAppSelector(getCity);
   const [sorting, setSorting] = useState<boolean>(false);
 
   useEffect(() => {
@@ -45,4 +46,6 @@ export default function Sorting(): JSX.Element {
       </ul>
     </form>
   );
-}
+});
+
+Sorting.displayName = 'Sorting';
