@@ -13,7 +13,7 @@ export type CardProps = {
 
 export default function Card({ offer, onClick, onHover }: CardProps): JSX.Element {
 
-  const {id, title, isFavorite, type } = offer;
+  const {id, title, isFavorite, isPremium, type } = offer;
   const auth = useAppSelector(getAuthorizationStatus);
 
   return (
@@ -21,6 +21,10 @@ export default function Card({ offer, onClick, onHover }: CardProps): JSX.Elemen
       onMouseEnter={() => onHover?.(id)}
       onMouseLeave={() => onHover?.(null)}
     >
+      {isPremium &&
+      <div className="place-card__mark">
+        <span>Premium</span>
+      </div>}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={`${AppRoute.Offer}/${id}`}>
           <img
