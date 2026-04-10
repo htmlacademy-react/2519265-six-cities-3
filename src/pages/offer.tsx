@@ -37,7 +37,6 @@ export default function Offer(): JSX.Element | null {
   const isError = useAppSelector(getHasError);
   const navigate = useNavigate();
 
-  // console.log(offersNearby)
   useEffect(() => {
     if (id && !isOfferLoadingStatus && currentOffer?.id !== id) {
       dispatch(fetchOfferActions(id));

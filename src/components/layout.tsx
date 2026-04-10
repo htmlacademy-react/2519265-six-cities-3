@@ -20,7 +20,6 @@ export default function Layout({favoritePlacesCount, authorizationStatus}: Autho
     THEME_MAP[path as AppPath] ?? '';
 
   const dynamicClass = getLayoutClass(pathname);
-  // console.log(user)
   return (
     <div className={`page ${dynamicClass}`}>
       <Header user={user} favoritePlacesCount={favoritePlacesCount} authorizationStatus={authorizationStatus}/>

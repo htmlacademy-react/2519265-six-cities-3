@@ -19,7 +19,6 @@ export default function App() {
 
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isLoadingOffers = useAppSelector(getIsOffersLoadingStatus);
-  // const offers = useAppSelector((state) => state.offers);
   const favoritesOffers = useAppSelector(getFavoritesOffers);
 
   if(authorizationStatus === AuthorizationStatus.Unknown || isLoadingOffers) {

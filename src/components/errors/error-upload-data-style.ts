@@ -29,10 +29,8 @@ type errorUploadTextType = {
 };
 
 export const errorUploadText: errorUploadTextType = {
-  // fontSize: '50px',
   color: '#fff',
   backgroundColor: '#4481c3',
-  // display: block;
   padding: '9px 21px 6px 11px',
   fontSize: '19px',
   lineHeight: '1.211',

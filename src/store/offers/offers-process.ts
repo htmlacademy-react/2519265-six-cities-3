@@ -2,12 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CITIES_NAME, NameSpace, SortType } from '../../const';
 import { OffersProcessType } from '../../types/state';
 import { fetchFavoriteOfferActions, fetchOffersActions, toggleFavoriteOffer } from '../api-actions';
-// import { sortingMap } from '../actions';
 
 export const initialState: OffersProcessType = {
   offers: [],
   city: CITIES_NAME[0],
-  // offersOfCity: state.offers.filter((offer) => offer.city.name === state.city),
   activeSortType: SortType.Popular,
   favoritesOffers: [],
   isOffersLoadingStatus: false,
@@ -34,7 +32,6 @@ export const offersProcess = createSlice({
       })
       .addCase(fetchOffersActions.fulfilled, (state, action) => {
         state.offers = action.payload;
-        // state.offersOfCity = state.offers.filter((offer) => offer.city.name === state.city);
         state.isOffersLoadingStatus = false;
       })
       .addCase(fetchOffersActions.rejected, (state) => {

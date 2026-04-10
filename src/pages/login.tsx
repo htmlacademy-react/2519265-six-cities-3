@@ -3,11 +3,8 @@ import { Link } from 'react-router-dom';
 import { AuthDataType } from '../types/auth-data';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { loginUser } from '../store/api-actions';
-// import { setCity } from '../store/actions';
 import { getCity } from '../store/offers/selectors';
 import { setCity } from '../store/offers/offers-process';
-
-// const passwordPattern = /^[a-zA-Z0-9]+$/;
 
 export default function Login(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);

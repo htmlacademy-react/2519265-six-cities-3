@@ -3,7 +3,6 @@ import {store} from '../store/index.ts';
 import { CommentType } from './comment.ts';
 import { OfferForCardType, OfferFullType } from './offer.ts';
 import { UserDataType } from './user-data.ts';
-// import { UserType } from './user-type.ts';
 
 export type UserProcessType = {
   authorizationStatus: AuthorizationStatus;
@@ -14,7 +13,6 @@ export type UserProcessType = {
 export type OffersProcessType = {
   offers: OfferForCardType [];
   city: string;
-  // offersOfCity: OfferForCardType[];
   activeSortType: SortType;
   favoritesOffers: OfferForCardType[];
   isOffersLoadingStatus: boolean;

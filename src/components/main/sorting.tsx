@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SortType } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-// import { setSortType } from '../../store/actions';
 import { getActiveSortType, getCity } from '../../store/offers/selectors';
 import { setSortType } from '../../store/offers/offers-process';
 

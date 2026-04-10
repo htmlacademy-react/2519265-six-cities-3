@@ -11,6 +11,4 @@ export const sortingMap: Record<string, SortFunction> = {
   [SortType.Popular]: (offers) => offers,
 };
 
-// export const setErrors = createAction<string | null>('offers/setErrors');
-
 export const redirectToRoute = createAction<AppRoute>('app/redirectToRoute');

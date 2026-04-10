@@ -1,7 +1,6 @@
 import { CITIES_NAME } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { setCity } from '../../store/offers/offers-process';
-// import { setCity } from '../../store/actions';
 import LocationItem from './location-item';
 
 type LocationListProps = {
@@ -17,7 +16,6 @@ export default function LocationList({
   return (
     <section className="locations container">
       <ul className="locations__list tabs__list">
-        {/* элементы списка */}
 
         {CITIES_NAME.map((city) => (
           <LocationItem

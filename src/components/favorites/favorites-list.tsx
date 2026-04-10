@@ -1,6 +1,5 @@
 import { useAppDispatch } from '../../hooks';
 import { toggleFavoriteOffer } from '../../store/api-actions';
-// import { getFavoritesOffers } from '../../store/offers/selectors';
 import { OfferForCardType } from '../../types/offer';
 import FavoritesListItem from './favorites-list-item';
 
@@ -24,7 +23,6 @@ export default function FavoritesList({offersCard}: FavoritesListProps): JSX.Ele
   return (
     <ul className="favorites__list">
       {[...currentCitys].map((city) => {
-        // console.log(city)
         const currentOffersOfCity = offersCard.filter(
           (offer) => offer.isFavorite === true && offer.city.name === city,
         );

@@ -1,21 +1,14 @@
 import {
   FormEvent,
   Fragment,
-  // ReactEventHandler,
   useRef,
   useState,
-  // useState,
 } from 'react';
 import { ReviewDataType } from '../../types/review-data-type';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { postReview } from '../../store/api-actions';
 import { MAX_LENGHT_COMMENT, MIN_LENGHT_COMMENT, MIN_RATING_COMMENT } from '../../const';
 import { getOffer } from '../../store/offer/selectors';
-// import { useAppDispatch } from '../../hooks';
-
-// type ChangeHandlerType = ReactEventHandler<
-//   HTMLInputElement | HTMLTextAreaElement
-// >;
 
 const ratingStars = [
   { value: 5, label: 'perfect' },

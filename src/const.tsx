@@ -6,7 +6,7 @@ export enum AppRoute {
   NotFound = '*',
 }
 
-// export const getOfferPath = (id: string | number) =>`${AppRoute.Offer}/${id}`;
+export const getOfferPath = (id: string | number) =>`${AppRoute.Offer}/${id}`;
 
 export enum AuthorizationStatus {
   Auth = 'AUTH',

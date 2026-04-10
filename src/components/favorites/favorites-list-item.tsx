@@ -3,7 +3,6 @@ import FavoritesListCard from './favorites-list-card';
 import { OfferForCardType } from '../../types/offer';
 import { useAppDispatch } from '../../hooks';
 import { setCity } from '../../store/offers/offers-process';
-// import { setCity } from '../../store/actions';
 
 export type FavoriteItemProps = {
   city: string;
