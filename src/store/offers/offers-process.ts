@@ -22,6 +22,9 @@ export const offersProcess = createSlice({
     },
     setSortType:(state, action: PayloadAction<SortType>) => {
       state.activeSortType = action.payload;
+    },
+    clearFavoriteOffers:(state) => {
+      state.favoritesOffers = [];
     }
   },
   extraReducers(builder) {
@@ -62,4 +65,4 @@ export const offersProcess = createSlice({
   },
 });
 
-export const {setCity, setSortType} = offersProcess.actions;
+export const {setCity, setSortType, clearFavoriteOffers} = offersProcess.actions;

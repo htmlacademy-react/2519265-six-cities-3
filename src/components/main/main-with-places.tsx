@@ -21,6 +21,7 @@ export const MainWithPlaces = memo(({offersOfCity, city}: MainWithPlacesProps): 
   const handleFavoriteClick = useCallback((data: {id: string; status: boolean}) => {
     dispatch(toggleFavoriteOffer(data));
   }, [dispatch]);
+
   const [currentCardId, setCurrentCardId] = useState<string | null>(null);
 
   const handleCardHover = useCallback((id: string | null) => {

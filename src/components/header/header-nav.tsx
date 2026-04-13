@@ -17,6 +17,7 @@ export default function HeaderNav({
 }: Authorization): JSX.Element {
   const isAuth = authorizationStatus === String(AuthorizationStatus.Auth);
   const dispatch = useAppDispatch();
+
   return (
     <nav className="header__nav">
       <ul className="header__nav-list">

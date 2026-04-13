@@ -12,3 +12,4 @@ export const sortingMap: Record<string, SortFunction> = {
 };
 
 export const redirectToRoute = createAction<AppRoute>('app/redirectToRoute');
+
