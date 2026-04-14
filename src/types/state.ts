@@ -17,6 +17,7 @@ export type OffersProcessType = {
   favoritesOffers: OfferForCardType[];
   isOffersLoadingStatus: boolean;
   hasError: boolean;
+  isFavoritesLoading: boolean;
 }
 
 export type OfferProcessType = {
@@ -24,6 +25,7 @@ export type OfferProcessType = {
   offersNearby: OfferForCardType [];
   comments: CommentType[];
   hasError: boolean;
+  isCommentLoading: boolean;
 }
 
 export type State = ReturnType<typeof store.getState>;

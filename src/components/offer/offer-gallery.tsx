@@ -5,10 +5,11 @@ type OfferGalleryProps = {
 }
 
 export default function OfferGallery({images}: OfferGalleryProps): JSX.Element {
+  const imagesForRendering = images.slice(0, 6);
   return (
     <div className="offer__gallery-container container">
       <div className="offer__gallery">
-        {images.map((image) => <OfferGalleryItem key={image} image={image}/>)}
+        {imagesForRendering.map((image) => <OfferGalleryItem key={image} image={image}/>)}
       </div>
     </div>
   );

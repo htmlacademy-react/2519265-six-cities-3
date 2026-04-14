@@ -1,13 +1,11 @@
-import {
-  FormEvent,
-  Fragment,
-  useRef,
-  useState,
-} from 'react';
-import { ReviewDataType } from '../../types/review-data-type';
+import { FormEvent, Fragment, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { postReview } from '../../store/api-actions';
-import { MAX_LENGHT_COMMENT, MIN_LENGHT_COMMENT, MIN_RATING_COMMENT } from '../../const';
+import {
+  MAX_LENGHT_COMMENT,
+  MIN_LENGHT_COMMENT,
+  MIN_RATING_COMMENT,
+} from '../../const';
 import { getOffer } from '../../store/offer/selectors';
 
 const ratingStars = [
@@ -19,37 +17,60 @@ const ratingStars = [
 ];
 
 export default function OfferForm() {
-
   const dispatch = useAppDispatch();
   const offer = useAppSelector(getOffer);
-
-  const onSubmit = (data: ReviewDataType) => {
-    if(offer?.id) {
-      dispatch(postReview({data: data, id: offer.id}));
-    }
-  };
 
   const reviewRef = useRef<HTMLTextAreaElement | null>(null);
 
   const [newComment, setNewComment] = useState<number>(0);
   const [newRating, setNewRating] = useState<string>('0');
+  const [isFormDisabled, setIsFormDisabled] = useState<boolean>(false);
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    if (reviewRef.current !== null) {
-      onSubmit({
-        rating: Number(newRating),
-        comment: reviewRef.current.value,
-      });
-      setNewRating('0');
-      reviewRef.current.value = '';
-    }
+
+    setIsFormDisabled(true);
+    const sendReview = async () => {
+      if (reviewRef.current !== null && Number(newRating) !== 0 && offer?.id) {
+        try {
+          await dispatch(
+            postReview({
+              data: {
+                rating: Number(newRating),
+                comment: reviewRef.current.value,
+              },
+              id: offer.id,
+            })
+          ).unwrap();
+
+          setNewRating('0');
+          if (reviewRef.current) {
+            reviewRef.current.value = '';
+          }
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.log('ошибка отправки');
+        } finally {
+          setIsFormDisabled(false);
+        }
+      }
+    };
+
+    sendReview();
   };
 
-  const isDesabled = Number(newComment) <= MIN_LENGHT_COMMENT || Number(newRating) === MIN_RATING_COMMENT;
+  const isDisabled =
+    Number(newComment) < MIN_LENGHT_COMMENT ||
+    Number(newRating) === MIN_RATING_COMMENT ||
+    Number(newComment) > MAX_LENGHT_COMMENT;
 
   return (
-    <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit}>
+    <form
+      className="reviews__form form"
+      action="#"
+      method="post"
+      onSubmit={handleSubmit}
+    >
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
@@ -64,6 +85,7 @@ export default function OfferForm() {
               type="radio"
               checked={newRating === String(value)}
               onChange={() => setNewRating(String(value))}
+              disabled={isFormDisabled}
             />
             <label
               htmlFor={`${value}-stars`}
@@ -83,8 +105,8 @@ export default function OfferForm() {
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         ref={reviewRef}
-        maxLength={MAX_LENGHT_COMMENT}
         onChange={() => setNewComment(reviewRef.current?.value.length ?? 0)}
+        disabled={isFormDisabled}
       >
       </textarea>
       <div className="reviews__button-wrapper">
@@ -96,7 +118,7 @@ export default function OfferForm() {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={isDesabled}
+          disabled={isDisabled || isFormDisabled}
         >
           Submit
         </button>

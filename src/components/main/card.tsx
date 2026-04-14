@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { OfferForCardType } from '../../types/offer';
 import { AppRoute, AuthorizationStatus, BookmarkClassName } from '../../const';
 import { getWidthForRating } from '../../utils';
@@ -10,15 +10,25 @@ export type CardProps = {
   offer: OfferForCardType;
   onClick: (data: {id: string; status: boolean}) => void;
   onHover?: (id: string | null) => void;
+  className: string;
 };
 
-export const Card = memo(({ offer, onClick, onHover }: CardProps): JSX.Element => {
+export const Card = memo(({ offer, onClick, onHover, className }: CardProps): JSX.Element => {
 
   const {id, title, isFavorite, isPremium, type } = offer;
   const auth = useAppSelector(getAuthorizationStatus);
+  const navigate = useNavigate();
+
+  const handleFavoriteClick = () => {
+    if(auth === AuthorizationStatus.Auth) {
+      onClick({id, status: !isFavorite});
+    } else {
+      navigate(AppRoute.Login);
+    }
+  };
 
   return (
-    <article className="cities__card place-card"
+    <article className={`${className} place-card`}
       onMouseEnter={() => onHover?.(id)}
       onMouseLeave={() => onHover?.(null)}
     >
@@ -46,8 +56,7 @@ export const Card = memo(({ offer, onClick, onHover }: CardProps): JSX.Element =
           <button
             className={`place-card__bookmark-button button ${isFavorite && BookmarkClassName.PlaceCardActive}`}
             type="button"
-            onClick={() => onClick({id, status: !isFavorite})}
-            title={auth === AuthorizationStatus.NoAuth ? 'Log in to add to favorites' : undefined}
+            onClick={handleFavoriteClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
@@ -58,7 +67,7 @@ export const Card = memo(({ offer, onClick, onHover }: CardProps): JSX.Element =
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
             <span
-              style={{ width: `${getWidthForRating(offer.rating)}%` }}
+              style={{ width: `${getWidthForRating(Math.round(offer.rating))}%` }}
             >
             </span>
             <span className="visually-hidden">Rating</span>

@@ -10,14 +10,14 @@ export default function MainWithElements(): JSX.Element {
   const offers = useAppSelector(getOffers);
   const cityName = useAppSelector(getCity);
   const offersCards = offers.filter((offer) => offer.city.name === cityName);
-  const city = offersCards[0].city;
+  const city = offersCards[0]?.city;
 
   const isErrorOfUpload = useAppSelector(getOffersError);
 
   const isPlaces: boolean = offersCards.length > 0;
 
   return (
-    <main className={`page__main page__main--index ${!isPlaces && 'page__main--index-empty'}`}>
+    <main className={`page__main page__main--index ${!isPlaces ? 'page__main--index-empty' : ''}`}>
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
         <LocationList activeCity={cityName} />

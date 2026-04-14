@@ -49,7 +49,8 @@ export default function Map({
   }, [city, map]);
 
   useEffect(() => {
-    if (map) {
+    if (map && markerLayer.current) {
+      markerLayer.current.clearLayers();
       offersOfCurrentCity.forEach((point) => {
         leaflet
           .marker(

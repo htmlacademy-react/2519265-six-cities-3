@@ -7,7 +7,7 @@ type ReviewsProps = {
 }
 
 export default function OfferReviewsList({comments}: ReviewsProps): JSX.Element {
-  const sortedByDateComments = sortByDate(comments);
+  const sortedByDateComments = sortByDate(comments).slice(0, 10);
   return (
     <ul className="reviews__list">
       {sortedByDateComments.map((comment) => <OfferReviewsItem key={comment.id} comment={comment}/>)}

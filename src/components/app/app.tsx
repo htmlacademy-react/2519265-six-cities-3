@@ -15,30 +15,31 @@ import { browserHistory } from '../../browser-history';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import {
   getFavoritesOffers,
+  getIsFavoritesLoaded,
   getIsOffersLoadingStatus,
 } from '../../store/offers/selectors';
 import { useEffect } from 'react';
-import { fetchFavoriteOfferActions, fetchOffersActions } from '../../store/api-actions';
-import { clearFavoriteOffers } from '../../store/offers/offers-process';
+import { fetchFavoriteOfferActions } from '../../store/api-actions';
+import { clearFavoriteOffers, resetFavoritesOffer } from '../../store/offers/offers-process';
 
 export default function App() {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isLoadingOffers = useAppSelector(getIsOffersLoadingStatus);
   const dispatch = useAppDispatch();
   const favoritesOffers = useAppSelector(getFavoritesOffers);
+  const isFavoritesLoaded = useAppSelector(getIsFavoritesLoaded);
 
   useEffect(() => {
-    if (authorizationStatus === AuthorizationStatus.Auth) {
-      if (favoritesOffers.length === 0) {
-        dispatch(fetchFavoriteOfferActions());
-        dispatch(fetchOffersActions());
-      }
+    if (authorizationStatus === AuthorizationStatus.Unknown) {
+      return;
+    }
+    if (authorizationStatus === AuthorizationStatus.Auth && !isFavoritesLoaded) {
+      dispatch(fetchFavoriteOfferActions());
     } else if (authorizationStatus === AuthorizationStatus.NoAuth) {
       dispatch(clearFavoriteOffers());
-      dispatch(fetchOffersActions());
-
+      dispatch(resetFavoritesOffer());
     }
-  }, [authorizationStatus, dispatch, favoritesOffers.length]);
+  }, [authorizationStatus, dispatch, isFavoritesLoaded]);
 
 
   if (authorizationStatus === AuthorizationStatus.Unknown || isLoadingOffers) {
@@ -59,7 +60,13 @@ export default function App() {
           }
         >
           <Route path={AppRoute.Main} element={<Main />}></Route>
-          <Route path={AppRoute.Favorites} element={<LayoutTools />}>
+          <Route path={AppRoute.Favorites} element={
+            <PrivateRoute>
+              <LayoutTools />
+            </PrivateRoute>
+
+          }
+          >
             <Route
               path={AppRoute.Favorites}
               element={
@@ -74,7 +81,11 @@ export default function App() {
           <Route path="*" element={<NotFound />}></Route>
         </Route>
 
-        <Route path={AppRoute.Login} element={<Login />}></Route>
+        <Route path={AppRoute.Login} element={
+          <Login />
+        }
+        >
+        </Route>
       </Routes>
     </HistoryRouter>
   );

@@ -27,12 +27,12 @@ export const WIDTH_FOR_RATING: number = 20;
 export const MIN_RATING: number = 1;
 
 export enum DateFormat {
-  CommentDate = 'MMMM DD',
+  CommentDate = 'MMMM YYYY',
 }
 
 export enum BookmarkClassName {
   Offer = 'offer',
-  OfferActive = 'offer__bookmark-button button--active',
+  OfferActive = 'offer__bookmark-button--active',
   PlaceCard = 'place-card',
   PlaceCardActive = 'place-card__bookmark-button--active',
 }
@@ -81,3 +81,15 @@ export const CITIES_NAME: string[] = [
   'Hamburg',
   'Dusseldorf',
 ];
+
+export enum ClassNameForCard {
+  Offer = 'near-places__card',
+  Main = 'cities__card'
+}
+
+export enum ClassNameForMain {
+  Main = 'main',
+  Login = 'login',
+  Favorites = 'favorites',
+  Offer = 'offer',
+}

@@ -32,7 +32,7 @@ export default function HeaderNav({
                   <img src={user?.avatarUrl} alt={user?.name} />
                 </div>
                 <span className="header__user-name user__name">
-                  {user?.name}
+                  {user?.email}
                 </span>
                 <span className="header__favorite-count">
                   {favoritePlacesCount}

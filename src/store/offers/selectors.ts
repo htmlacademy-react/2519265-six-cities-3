@@ -8,3 +8,4 @@ export const getActiveSortType = (state: State): SortType => state[NameSpace.Off
 export const getFavoritesOffers = (state: State): OfferForCardType[] => state[NameSpace.Offers].favoritesOffers;
 export const getIsOffersLoadingStatus = (state: State): boolean => state[NameSpace.Offers].isOffersLoadingStatus;
 export const getOffersError = (state: State): boolean => state[NameSpace.Offers].hasError;
+export const getIsFavoritesLoaded = (state: State): boolean => state[NameSpace.Offers].isFavoritesLoading;

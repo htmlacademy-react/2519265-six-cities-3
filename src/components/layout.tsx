@@ -16,16 +16,20 @@ export default function Layout({favoritePlacesCount, authorizationStatus}: Autho
   const user = useAppSelector(getUser);
   const { pathname } = useLocation();
 
-  const getLayoutClass = (path: string): string =>
-    THEME_MAP[path as AppPath] ?? '';
+  const getLayoutClass = (path: string): string => {
+    if (path === '/favorites' && favoritePlacesCount === 0) {
+      return 'page--favorites-empty';
+    }
+    return THEME_MAP[path as AppPath] ?? '';
+  };
 
   const dynamicClass = getLayoutClass(pathname);
   return (
     <div className={`page ${dynamicClass}`}>
       <Header user={user} favoritePlacesCount={favoritePlacesCount} authorizationStatus={authorizationStatus}/>
-      <main className="page__main page__main--index">
-        <Outlet />
-      </main>
+      {/* <main className="page__main page__main--index"> */}
+      <Outlet />
+      {/* </main> */}
     </div>
   );
 }

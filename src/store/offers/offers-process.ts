@@ -10,6 +10,7 @@ export const initialState: OffersProcessType = {
   favoritesOffers: [],
   isOffersLoadingStatus: false,
   hasError: false,
+  isFavoritesLoading: false,
 };
 
 export const offersProcess = createSlice({
@@ -23,8 +24,14 @@ export const offersProcess = createSlice({
     setSortType:(state, action: PayloadAction<SortType>) => {
       state.activeSortType = action.payload;
     },
+    resetFavoritesOffer: (state) => {
+      state.offers.map((offer) => {
+        offer.isFavorite = false;
+      });
+    },
     clearFavoriteOffers:(state) => {
       state.favoritesOffers = [];
+      state.isFavoritesLoading = false;
     }
   },
   extraReducers(builder) {
@@ -41,9 +48,6 @@ export const offersProcess = createSlice({
         state.isOffersLoadingStatus = false;
         state.hasError = true;
       })
-      .addCase(fetchFavoriteOfferActions.pending, (state) => {
-        state.isOffersLoadingStatus = true;
-      })
       .addCase(toggleFavoriteOffer.fulfilled, (state, action) => {
         const updateOffer = action.payload;
         const currentOffer = state.offers.find((offer) => offer.id === updateOffer.id);
@@ -52,7 +56,10 @@ export const offersProcess = createSlice({
           currentOffer.isFavorite = updateOffer.isFavorite;
 
           if(updateOffer.isFavorite) {
-            state.favoritesOffers.push(currentOffer);
+            const checkOffer = state.favoritesOffers.some((offer) => offer.id === updateOffer.id);
+            if(!checkOffer) {
+              state.favoritesOffers.push(currentOffer);
+            }
           }else {
             state.favoritesOffers = state.favoritesOffers.filter((offer) => offer.id !== updateOffer.id);
           }
@@ -60,9 +67,16 @@ export const offersProcess = createSlice({
       })
       .addCase(fetchFavoriteOfferActions.fulfilled, (state, action) => {
         state.favoritesOffers = action.payload;
-        state.isOffersLoadingStatus = false;
+        state.isFavoritesLoading = true;
+
+        state.offers.forEach((offer) => {
+          offer.isFavorite = state.favoritesOffers.some((favorite) => favorite.id === offer.id);
+        });
+      })
+      .addCase(fetchFavoriteOfferActions.rejected, (state) => {
+        state.isFavoritesLoading = false;
       });
   },
 });
 
-export const {setCity, setSortType, clearFavoriteOffers} = offersProcess.actions;
+export const {setCity, setSortType, clearFavoriteOffers, resetFavoritesOffer} = offersProcess.actions;

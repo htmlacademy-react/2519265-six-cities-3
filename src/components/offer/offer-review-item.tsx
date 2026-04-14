@@ -29,7 +29,7 @@ export default function OfferReviewsItem({
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
             <span
-              style={{ width: `${getWidthForRating(comment.rating)}%` }}
+              style={{ width: `${getWidthForRating(Math.round(comment.rating))}%` }}
             >
             </span>
             <span className="visually-hidden">Rating</span>

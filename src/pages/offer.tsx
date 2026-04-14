@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import OfferGallery from '../components/offer/offer-gallery';
 import OfferInside from '../components/offer/offer-inside';
-import { AppRoute, BookmarkClassName } from '../const';
+import { AppRoute, AuthorizationStatus, BookmarkClassName, ClassNameForCard } from '../const';
 import OfferReviews from '../components/offer/offer-reviews';
 import { getWidthForRating } from '../utils';
 import Map from '../components/map/map';
@@ -72,12 +72,18 @@ export const Offer = memo((): JSX.Element | null => {
   } = currentOffer;
 
   const handleFavoriteClick = (data: {id: string; status: boolean}) => {
-    dispatch(toggleFavoriteOffer(data));
+    if(authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(toggleFavoriteOffer(data));
+
+    } else {
+      navigate(AppRoute.Login);
+    }
   };
 
   const offersCard = offersNearby
-    .filter((offer) => offer.city.name === city.name && offer.id !== id)
+    .filter((offer) => offer.id !== id)
     .slice(0, 3);
+
   const currentOfferForCard = offersForCards.find((offer) => offer.id === id);
   const { name, avatarUrl, isPro } = host;
 
@@ -95,7 +101,7 @@ export const Offer = memo((): JSX.Element | null => {
             <div className="offer__name-wrapper">
               <h1 className="offer__name">{title}</h1>
               <button
-                className={`offer__bookmark-button button ${isFavorite ? BookmarkClassName.PlaceCardActive : ''}`}
+                className={`offer__bookmark-button button ${isFavorite ? BookmarkClassName.OfferActive : ''}`}
                 type="button"
                 onClick={() => handleFavoriteClick({id: currentOffer.id, status: !isFavorite})}
               >
@@ -111,7 +117,7 @@ export const Offer = memo((): JSX.Element | null => {
               <div className="offer__stars rating__stars">
                 <span
                   style={{
-                    width: `${rating ? getWidthForRating(rating) : 0}%`,
+                    width: `${rating ? getWidthForRating(Math.round(rating)) : 0}%`,
                   }}
                 >
                 </span>
@@ -152,7 +158,7 @@ export const Offer = memo((): JSX.Element | null => {
                   />
                 </div>
                 <span className="offer__user-name">{name}</span>
-                <span className="offer__user-status">{isPro ? 'Pro' : ''}</span>
+                {isPro ? '<span className="offer__user-status">Pro</span>' : ''}
               </div>
               <div className="offer__description">
                 <p className="offer__text">{description}</p>
@@ -182,7 +188,7 @@ export const Offer = memo((): JSX.Element | null => {
           </h2>
           <div className="near-places__list places__list">
             {offersCard.map((offer) => (
-              <Card key={offer.id} offer={offer} onClick={handleFavoriteClick} />
+              <Card key={offer.id} offer={offer} onClick={handleFavoriteClick} className={ClassNameForCard.Offer} />
             ))}
           </div>
         </section>

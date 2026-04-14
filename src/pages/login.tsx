@@ -1,35 +1,35 @@
-import { FormEvent, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { AuthDataType } from '../types/auth-data';
+import { FormEvent, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { loginUser } from '../store/api-actions';
-import { getCity } from '../store/offers/selectors';
 import { setCity } from '../store/offers/offers-process';
+import { getRandomCity } from '../utils';
+import { getAuthorizationStatus } from '../store/user-process/selectors';
+import { AppRoute, AuthorizationStatus } from '../const';
 
 export default function Login(): JSX.Element {
-  const loginRef = useRef<HTMLInputElement | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const dispatch = useAppDispatch();
-  const city = useAppSelector(getCity);
-
-  const onSubmit = (authData: AuthDataType) => {
-    dispatch(loginUser(authData));
-  };
+  const city = getRandomCity();
+  const authStatus = useAppSelector(getAuthorizationStatus);
+  const navigate = useNavigate();
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if (
-      loginRef.current !== null &&
-      passwordRef.current !== null
-    ) {
-      onSubmit({
-        login: loginRef.current.value,
-        password: passwordRef.current.value,
-      });
-    }
+    dispatch(loginUser({
+      login: email,
+      password:password
+    }));
   };
+
+  useEffect(() => {
+    if (authStatus === AuthorizationStatus.Auth) {
+      navigate(AppRoute.Main);
+    }
+  }, [authStatus, navigate]);
 
   const handleClick = () => {
     dispatch(setCity(city));
@@ -73,7 +73,8 @@ export default function Login(): JSX.Element {
                   name="email"
                   placeholder="Email"
                   required
-                  ref={loginRef}
+                  value={email}
+                  onChange={(evt) => setEmail(evt.target.value)}
                 />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
@@ -84,7 +85,8 @@ export default function Login(): JSX.Element {
                   name="password"
                   placeholder="Password"
                   required
-                  ref={passwordRef}
+                  value={password}
+                  onChange={(evt) => setPassword(evt.target.value)}
                 />
               </div>
               <button

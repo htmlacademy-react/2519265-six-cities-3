@@ -8,6 +8,7 @@ const initialState: OfferProcessType = {
   offersNearby: [],
   comments: [],
   hasError: false,
+  isCommentLoading: false,
 };
 
 export const offerProcess = createSlice({
@@ -41,6 +42,10 @@ export const offerProcess = createSlice({
       })
       .addCase(postReview.fulfilled, (state, action) => {
         state.comments.push(action.payload);
+        state.isCommentLoading = false;
+      })
+      .addCase(postReview.pending, (state) => {
+        state.isCommentLoading = true;
       });
   },
 });
