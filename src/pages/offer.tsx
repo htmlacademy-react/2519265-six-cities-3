@@ -55,8 +55,6 @@ export const Offer = memo((): JSX.Element | null => {
     return null;
   }
 
-  console.log(offersNearby)
-
   const {
     title,
     rating,
