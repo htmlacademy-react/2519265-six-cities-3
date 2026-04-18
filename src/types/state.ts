@@ -18,6 +18,7 @@ export type OffersProcessType = {
   isOffersLoadingStatus: boolean;
   hasError: boolean;
   isFavoritesLoading: boolean;
+  isFavoritesLoaded: boolean;
 }
 
 export type OfferProcessType = {

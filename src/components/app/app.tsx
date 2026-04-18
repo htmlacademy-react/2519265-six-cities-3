@@ -26,7 +26,7 @@ export default function App() {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isLoadingOffers = useAppSelector(getIsOffersLoadingStatus);
   const dispatch = useAppDispatch();
-  const favoritesOffers = useAppSelector(getFavoritesOffers);
+  const favoriteOffers = useAppSelector(getFavoritesOffers);
   const isFavoritesLoaded = useAppSelector(getIsFavoritesLoaded);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function App() {
     return <Loader />;
   }
 
-  const favoritePlacesCount = favoritesOffers.length;
+  const favoritePlacesCount = favoriteOffers.length;
 
   return (
     <HistoryRouter history={browserHistory}>

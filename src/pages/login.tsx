@@ -8,6 +8,7 @@ import { getAuthorizationStatus } from '../store/user-process/selectors';
 import { AppRoute, AuthorizationStatus } from '../const';
 
 export default function Login(): JSX.Element {
+  const pattern = '^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -15,14 +16,16 @@ export default function Login(): JSX.Element {
   const city = getRandomCity();
   const authStatus = useAppSelector(getAuthorizationStatus);
   const navigate = useNavigate();
+  const [isFormDisabled, setIsFormDisabled] = useState(false);
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-
+    setIsFormDisabled(true);
     dispatch(loginUser({
       login: email,
       password:password
     }));
+    setIsFormDisabled(false);
   };
 
   useEffect(() => {
@@ -74,6 +77,7 @@ export default function Login(): JSX.Element {
                   placeholder="Email"
                   required
                   value={email}
+                  disabled={isFormDisabled}
                   onChange={(evt) => setEmail(evt.target.value)}
                 />
               </div>
@@ -86,12 +90,15 @@ export default function Login(): JSX.Element {
                   placeholder="Password"
                   required
                   value={password}
+                  disabled={isFormDisabled}
+                  pattern={pattern}
                   onChange={(evt) => setPassword(evt.target.value)}
                 />
               </div>
               <button
                 className="login__submit form__submit button"
                 type="submit"
+                disabled={isFormDisabled}
               >
                 Sign in
               </button>

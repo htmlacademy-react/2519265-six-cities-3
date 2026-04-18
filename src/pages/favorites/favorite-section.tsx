@@ -5,12 +5,12 @@ import Favorites from './favorites';
 import FavoritesEmpty from './favorites-empty';
 
 export const FavoriteSection = memo(() => {
-  const favoritesOffers = useAppSelector(getFavoritesOffers);
+  const favoriteOffers = useAppSelector(getFavoritesOffers);
 
-  const isFavoriteOffers: boolean = favoritesOffers.length > 0;
+  const isFavoriteOffers: boolean = favoriteOffers.length > 0;
   return (
     <>
-      {isFavoriteOffers && <Favorites offersCard={favoritesOffers} />}
+      {isFavoriteOffers && <Favorites offerCards={favoriteOffers} />}
       {!isFavoriteOffers && <FavoritesEmpty />}
     </>
   );

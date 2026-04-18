@@ -4,10 +4,10 @@ import { OfferForCardType } from '../../types/offer';
 import {FavoritesListItem} from './favorites-list-item';
 
 export type FavoritesListProps = {
-  offersCard: OfferForCardType[];
+  offerCards: OfferForCardType[];
 };
 
-export default function FavoritesList({offersCard}: FavoritesListProps): JSX.Element {
+export default function FavoritesList({offerCards}: FavoritesListProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const handleFavoriteClick = (data: {id: string; status: boolean}) => {
@@ -15,16 +15,16 @@ export default function FavoritesList({offersCard}: FavoritesListProps): JSX.Ele
   };
 
   const currentCitys = new Set(
-    offersCard
-      .map((offer) => (offer.isFavorite === true ? offer.city.name : ''))
+    offerCards
+      .map((offer) => (offer.city.name))
       .filter(Boolean),
   );
 
   return (
     <ul className="favorites__list">
       {[...currentCitys].map((city) => {
-        const currentOffersOfCity = offersCard.filter(
-          (offer) => offer.isFavorite === true && offer.city.name === city,
+        const currentOffersOfCity = offerCards.filter(
+          (offer) => offer.city.name === city,
         );
         return (
           <FavoritesListItem

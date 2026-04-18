@@ -5,6 +5,7 @@ import { getWidthForRating } from '../../utils';
 import { useAppSelector } from '../../hooks';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { memo } from 'react';
+import { getIsFavoritesLoading } from '../../store/offers/selectors';
 
 export type CardProps = {
   offer: OfferForCardType;
@@ -18,8 +19,16 @@ export const Card = memo(({ offer, onClick, onHover, className }: CardProps): JS
   const {id, title, isFavorite, isPremium, type } = offer;
   const auth = useAppSelector(getAuthorizationStatus);
   const navigate = useNavigate();
+  const isFavoritesLoading = useAppSelector(getIsFavoritesLoading);
 
   const handleFavoriteClick = () => {
+    if(isFavoritesLoading) {
+      return;
+    }
+    if(auth === AuthorizationStatus.Unknown) {
+      return;
+
+    }
     if(auth === AuthorizationStatus.Auth) {
       onClick({id, status: !isFavorite});
     } else {
