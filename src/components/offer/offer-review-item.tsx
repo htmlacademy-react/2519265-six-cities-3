@@ -9,7 +9,7 @@ type ReviewsItemProp = {
   comment: CommentType;
 };
 
-export const OfferReviewsItem = memo(({
+export const OfferReviewItem = memo(({
   comment,
 }: ReviewsItemProp): JSX.Element =>
   (
@@ -46,4 +46,4 @@ export const OfferReviewsItem = memo(({
     </li>
   ));
 
-OfferReviewsItem.displayName = 'OfferReviewsItem';
+OfferReviewItem.displayName = 'OfferReviewItem';

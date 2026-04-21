@@ -5,7 +5,7 @@ import MainWithoutPlaces from '../components/main/main-without-places';
 import { useAppSelector } from '../hooks';
 import { getCity, getOffers, getOffersError } from '../store/offers/selectors';
 
-export default function MainWithElements(): JSX.Element {
+export default function Main(): JSX.Element {
 
   const offers = useAppSelector(getOffers);
   const cityName = useAppSelector(getCity);

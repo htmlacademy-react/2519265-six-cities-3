@@ -3,19 +3,20 @@ import { AppRoute, AuthorizationStatus } from '../../const';
 import Login from '../../pages/login';
 import { Offer } from '../../pages/offer';
 import NotFound from '../not-found/notFound';
-import PrivateRoute from '../privet-rout/privet-rout';
+import PrivateRoute from '../privet-route/privet-route';
 import Layout from '../layout';
 import LayoutTools from '../layout-tools';
 import {FavoriteSection} from '../../pages/favorites/favorite-section';
 import Main from '../../pages/main';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import Loader from '../loader/loader';
-import HistoryRouter from '../history-route/history-route';
+import HistoryRoute from '../history-route/history-route';
 import { browserHistory } from '../../browser-history';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import {
   getFavoritesOffers,
   getIsFavoritesLoaded,
+  getIsFavoritesLoading,
   getIsOffersLoadingStatus,
 } from '../../store/offers/selectors';
 import { useEffect } from 'react';
@@ -28,9 +29,11 @@ export default function App() {
   const dispatch = useAppDispatch();
   const favoriteOffers = useAppSelector(getFavoritesOffers);
   const isFavoritesLoaded = useAppSelector(getIsFavoritesLoaded);
+  const isFavoritesLoading = useAppSelector(getIsFavoritesLoading);
+
 
   useEffect(() => {
-    if (authorizationStatus === AuthorizationStatus.Unknown) {
+    if (authorizationStatus === AuthorizationStatus.Unknown || isFavoritesLoading) {
       return;
     }
     if (authorizationStatus === AuthorizationStatus.Auth && !isFavoritesLoaded) {
@@ -39,8 +42,7 @@ export default function App() {
       dispatch(clearFavoriteOffers());
       dispatch(resetFavoritesOffer());
     }
-  }, [authorizationStatus, dispatch, isFavoritesLoaded]);
-
+  }, [authorizationStatus, dispatch, isFavoritesLoaded, isFavoritesLoading]);
 
   if (authorizationStatus === AuthorizationStatus.Unknown || isLoadingOffers) {
     return <Loader />;
@@ -49,7 +51,7 @@ export default function App() {
   const favoritePlacesCount = favoriteOffers.length;
 
   return (
-    <HistoryRouter history={browserHistory}>
+    <HistoryRoute history={browserHistory}>
       <Routes>
         <Route
           element={
@@ -87,6 +89,6 @@ export default function App() {
         >
         </Route>
       </Routes>
-    </HistoryRouter>
+    </HistoryRoute>
   );
 }

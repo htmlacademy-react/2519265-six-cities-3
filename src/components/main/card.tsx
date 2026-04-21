@@ -76,7 +76,7 @@ export const Card = memo(({ offer, onClick, onHover, className }: CardProps): JS
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
             <span
-              style={{ width: `${getWidthForRating(Math.round(offer.rating))}%` }}
+              style={{ width: `${Math.round(getWidthForRating(offer.rating))}%` }}
             >
             </span>
             <span className="visually-hidden">Rating</span>
