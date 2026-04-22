@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import ErrorAuthorization from './components/errors/error-authorization';
+import {ErrorAuthorization} from './components/errors';
 import {
   checkAuthActions,
   fetchOffersActions,

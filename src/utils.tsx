@@ -7,7 +7,7 @@ import {
 } from './types/offer';
 
 export const getWidthForRating = (rating: number) =>
-  rating >= MIN_RATING ? (rating * WIDTH_FOR_RATING) : 0;
+  rating >= MIN_RATING ? (Math.round(rating) * WIDTH_FOR_RATING) : 0;
 
 export const sortByDate = (arr: CommentType[]) =>
   [...arr].sort(

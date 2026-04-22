@@ -1,27 +1,27 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import {OfferGallery} from '../components/offer/offer-gallery';
-import {OfferInside} from '../components/offer/offer-inside';
-import { AppRoute, AuthorizationStatus, BookmarkClassName, ClassNameForCard } from '../const';
-import {OfferReviews} from '../components/offer/offer-reviews';
-import { getWidthForRating } from '../utils';
-import Map from '../components/map/map';
-import {Card} from '../components/main/card';
+import {OfferGallery} from './offer-gallery';
+import {OfferInside} from './offer-inside';
+import { AppRoute, AuthorizationStatus, BookmarkClassName, ClassNameForCard } from '../../const';
+import {OfferReviews} from './offer-reviews';
+import { getWidthForRating } from '../../utils';
+import Map from '../../components/map/map';
+import {Card} from '../main/card';
 import {
   fetchCommentsActions,
   fetchOfferActions,
   fetchOffersNearbyActions,
   toggleFavoriteOffer,
-} from '../store/api-actions';
+} from '../../store/api-actions';
 import { memo, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { getIsOffersLoadingStatus, getOffers } from '../store/offers/selectors';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getIsOffersLoadingStatus, getOffers } from '../../store/offers/selectors';
 import {
   getComments,
   getHasError,
   getOffer,
   getOffersNearby,
-} from '../store/offer/selectors';
-import { getAuthorizationStatus } from '../store/user-process/selectors';
+} from '../../store/offer/selectors';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 export const Offer = memo((): JSX.Element | null => {
   const { id } = useParams<{ id: string }>();

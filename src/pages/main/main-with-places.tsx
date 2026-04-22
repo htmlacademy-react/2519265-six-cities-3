@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo, useState } from 'react';
-import Map from '../map/map';
+import Map from '../../components/map/map';
 import {Card} from './card';
 import {Sorting} from './sorting';
 import { useAppDispatch, useAppSelector } from '../../hooks';
