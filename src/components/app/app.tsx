@@ -1,13 +1,13 @@
 import { Route, Routes } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import Login from '../../pages/login';
-import { Offer } from '../../pages/offer';
-import NotFound from '../not-found/notFound';
+import { Offer } from '../../pages/offer/offer';
+import NotFound from '../not-found/not-found';
 import PrivateRoute from '../privet-route/privet-route';
 import Layout from '../layout';
 import LayoutTools from '../layout-tools';
 import {FavoriteSection} from '../../pages/favorites/favorite-section';
-import Main from '../../pages/main';
+import Main from '../../pages/main/main';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import Loader from '../loader/loader';
 import HistoryRoute from '../history-route/history-route';

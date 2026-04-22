@@ -1,5 +1,5 @@
-import FavoritesList from '../../components/favorites/favorites-list';
 import { OfferForCardType } from '../../types/offer';
+import FavoritesList from './favorites-list';
 
 export type FavoritesProps = {
   offerCards: OfferForCardType[];
